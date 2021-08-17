@@ -335,16 +335,12 @@
                 }
             }
         },
-        "/user/{userId}" : {
+        "/login" : {
             "post" : {
                 "tags": ["Users"],
                 "summary": "To Login",
                 "description": "Login and get JWT Token",
-                "parameters": [
-                    {
-                        "$ref" : "#/components/parameters/UserId"
-                    }
-                ],
+                "parameters": [],
                 "requestBody": {
                     "required": true,
                     "content" : {
@@ -353,8 +349,8 @@
                                 "$ref" : "#/components/schemas/Login"
                             },
                             "examples": {
-                                "Tono" : {
-                                    "description": "Example User tono login",
+                                "User1" : {
+                                    "description": "Example User1 login",
                                     "value":{
                                         "email/username" : "tono@123",
                                         "password" : "tonobros"
@@ -373,7 +369,7 @@
                                     "$ref" : "#/components/schemas/LoginSuccess"
                                 },
                                 "examples":{
-                                    "Tono" : {
+                                    "User1" : {
                                         "description": "Login Success",
                                         "value":{
                                             "email/username" : "tono@123",
