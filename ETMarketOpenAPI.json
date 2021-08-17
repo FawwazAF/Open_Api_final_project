@@ -71,7 +71,332 @@
                     }
                 }
             }
-        }       
+        },
+        "/cart/{id_cart}": {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Cart"],
+                "summary": "Get all products in a cart",
+                "description": "Reviewing chosen products in a cart",
+                "parameters": [
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get all products in a cart",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductsInCartList"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Example success get all products in a cart",
+                                        "value": [
+                                            {
+                                                "message": "success get all products by cart id",
+                                                "cart": {
+                                                    "id": 2,
+                                                    "customer_id": 3,
+                                                    "status": "ordered",
+                                                    "total_price": 70000,
+                                                    "total_quantity": 9
+                                                },
+                                                "seller": [
+                                                    {
+                                                        "id": 5,
+                                                        "name": "Toko Ibu Ani",
+                                                        "category_name": "Sayur-Sayuran",
+                                                        "products": [
+                                                            {
+                                                                "id": 5,
+                                                                "name": "Tomat",
+                                                                "price": 5000,
+                                                                "quantity": 1,
+                                                                "description": "Tomat"
+                                                            },
+                                                            {
+                                                                "id": 6,
+                                                                "name": "Kangkung",
+                                                                "price": 5000,
+                                                                "quantity": 2,
+                                                                "description": "Kangkung"
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "id": 7,
+                                                        "name": "Toko Pak Paijo",
+                                                        "category_name": "Ayam",
+                                                        "products": [
+                                                            {
+                                                                "id": 1,
+                                                                "name": "Ayam Potong",
+                                                                "price": 45000,
+                                                                "quantity": 1,
+                                                                "description": "Ayam potong 1 ekor"
+                                                            },
+                                                            {
+                                                                "id": 3,
+                                                                "name": "Ati Ampela",
+                                                                "price": 2000,
+                                                                "quantity": 5,
+                                                                "description": "Ati ampela"
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                        
+                        
+                    }
+                }
+            }
+        },
+        "/cart/{id_cart}/{id_product}": {
+            "delete": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Cart"],
+                "summary": "Delete product in a cart",
+                "description": "Deleting chosen product from a cart",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id_cart",
+                        "required": true,
+                        "description": "Id cart for delete chosen products from a cart",
+                        "schema": {
+                            "type": "integer",
+                            "minLength": 1,
+                            "maxLength": 10
+                        },
+                        "examples": {
+                            "Cart 1": {
+                                "description": "sample cart id for delete chosen products from a cart",
+                                "value": 1
+                            },
+                            "Cart 2": {
+                                "description": "sample cart id for delete chosen products from a cart",
+                                "value": 2
+                            }
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "id_product",
+                        "required": true,
+                        "description": "Id product for delete chosen products from a cart",
+                        "schema": {
+                            "type": "integer",
+                            "minLength": 1,
+                            "maxLength": 10
+                        },
+                        "examples": {
+                            "Product 1": {
+                                "description": "sample product id for delete chosen products from a cart",
+                                "value": 1
+                            },
+                            "Product 2": {
+                                "description": "sample product id for delete chosen products from a cart",
+                                "value": 2
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success delete chosen product from a cart",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DeletedProductList"
+                                    
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Success delete chosen product from a cart",
+                                        "value": {
+                                            "message": "Success delete chosen product from a cart",
+                                            "id": 5,
+                                            "name": "Tomat",
+                                            "price": 5000,
+                                            "quantity": 1,
+                                            "description": "Tomat"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Product not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "failed": {
+                                        "description": "Failed delete chosen product from a cart",
+                                        "value": {
+                                            "message": "Product not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/payment/{id_payment}": {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Payment Method"],
+                "summary": "Get payment method by id",
+                "description": "Choosing payment Method",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id_payment",
+                        "required": true,
+                        "description": "Id payment for choosing payment Method",
+                        "schema": {
+                            "type": "integer",
+                            "minLength": 1,
+                            "maxLength": 10
+                        },
+                        "examples": {
+                            "1": {
+                                "description": "sample payment id",
+                                "value": "Transfer BCA"
+                            },
+                            "2": {
+                                "description": "sample payment id",
+                                "value": "COD"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get payment method by id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Example success get payment method by id",
+                                        "value": [
+                                            {
+                                                "message": "success get payment method by id",
+                                                "id": 2,
+                                                "name": "COD"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/{id_user}": {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["User"],
+                "summary": "Get detail user by id",
+                "description": "Get detail user for user profile",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id_user",
+                        "required": true,
+                        "description": "Id user for get detail user",
+                        "schema": {
+                            "type": "integer",
+                            "minLength": 1,
+                            "maxLength": 10
+                        },
+                        "examples": {
+                            "1": {
+                                "description": "sample user id",
+                                "value": "1"
+                            },
+                            "2": {
+                                "description": "sample user id",
+                                "value": "2"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get detail user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DetailUserList"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Example success get detail user",
+                                        "value":
+                                        {
+                                            "message": "Success get detail user",
+                                            "id": 1,
+                                            "email": "dewi@gmail.com",
+                                            "name": "Dewi",
+                                            "address": "Jl. QQQQ no 292, Bogor",
+                                            "gender": "F"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     },
     "components": {
         "schemas": {
@@ -94,6 +419,129 @@
                 "items": {
                     "$ref": "#/components/schemas/MarketList"
                 }
+            },
+            "ProductsInCartList": {
+                "type": "object",
+                "properties": {
+                    "cart": {
+                        "type": "object",
+                        "items": {
+                            "$ref": "#/components/schemas/ArrayCartList"
+                        }
+                    },
+                    "seller": {
+                        "type": "object",
+                        "items": {
+                            "$ref": "#/components/schemas/ArraySellerInCartList"
+                        }
+                    }
+                }
+            },
+            "ArrayCartList": {
+                "type": "object",
+                "properties": {
+                    "id":{
+                        "type": "integer"
+                    },
+                    "customer_id": {
+                        "type": "integer"
+                    },
+                    "status" : {
+                        "type": "string"
+                    },
+                    "total_price": {
+                        "type": "integer"
+                    },
+                    "total_quantity": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "ArraySellerInCartList": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "category_name": {
+                        "type": "string"
+                    },
+                    "products": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ArrayProductsInCartList"
+                        }
+                    }
+                }
+            },
+            "ArrayProductsInCartList": {
+                "type": "object",
+                "properties": {
+                    "id" : {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "integer"
+                    },
+                    "quantity": {
+                        "type": "integer"
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                }
+            },
+            "DetailUserList": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "integer"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "address": {
+                        "type": "string"
+                    },
+                    "gender": {
+                        "type": "string"
+                    }
+                }
+            },
+            "DeletedProductList": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "integer"
+                    },
+                    "quantity": {
+                        "type": "integer"
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                } 
             }
         }
     }
