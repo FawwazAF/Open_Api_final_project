@@ -72,6 +72,317 @@
                 }
             }
         },
+        "/markets/{market_name}" :{
+            "get" : {
+                "tags" : ["Market"],
+                "summary": "Get list market",
+                "description": "Get market with certain name of market",
+                "parameters": [
+                    {
+                        "$ref" : "#/components/parameters/MarketName"
+                    }
+                ],
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema":{},
+                            "examples":{
+                                "pasar" : {
+                                    "description": "Example get market name",
+                                    "value":{
+                                        "search" : "pasar"
+                                    }
+                                },
+                                "edan" : {
+                                    "description": "Example get market name",
+                                    "value":{
+                                        "search" : "edan"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200" : {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArrayMarketList"
+                                },
+                                "examples": {
+                                    "pasar": {
+                                        "description": "Success get market by string",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "name": "Pasar Malam",
+                                                "address" : "bandung"
+                                            },
+                                            {
+                                                "id": 2,
+                                                "name": "Pasar Edan",
+                                                "address" : "Bekasi"
+                                            }
+                                        ]
+                                    },
+                                    "edan": {
+                                        "description": "Success get market by string",
+                                        "value": [
+                                            {
+                                                "id": 2,
+                                                "name": "Pasar Edan",
+                                                "address" : "Bekasi"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Market not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "pasar wadidaw": {
+                                        "description": "Failed to get list market",
+                                        "value": {
+                                            "message": "Market not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/markets/{market_id}/category" :{
+            "get" : {
+                "tags" : ["Market"],
+                "summary": "Get list category or seller",
+                "description": "Get list category or seller inside a market by certain id",
+                "parameters": [
+                    {
+                        "$ref" : "#/components/parameters/MarketId"
+                    }
+                ],
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema":{},
+                            "examples":{
+                                "Market a" : {
+                                    "description": "Example get list category or seller from market a",
+                                    "value":{
+                                        "Id" : "1"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200" : {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "Market a": {
+                                        "description": "Success get list category or seller by id of market",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "name": "Toko mas Ujang",
+                                                "category" : "sayur-sayuran"
+                                            },
+                                            {
+                                                "id": 2,
+                                                "name": "Toko mas Bayu",
+                                                "category" : "daging"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Market not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "id : 999": {
+                                        "description": "Failed to get list category or seller from market",
+                                        "value": {
+                                            "message": "Market not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/markets/{market_id}/category/{category_name}" :{
+            "get" : {
+                "tags" : ["Market"],
+                "summary": "Get list category or seller",
+                "description": "et list category or seller by string",
+                "parameters": [
+                    {
+                        "$ref" : "#/components/parameters/CategoryList"
+                    }
+                ],
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema":{},
+                            "examples":{
+                                "sayur" : {
+                                    "description": "Example get category name",
+                                    "value":{
+                                        "search" : "sayur"
+                                    }
+                                },
+                                "daging" : {
+                                    "description": "Example get category name",
+                                    "value":{
+                                        "search" : "daging"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200" : {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "sayur": {
+                                        "description": "Success get list category or seller by string",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "name": "Toko mas Ujang",
+                                                "category" : "sayur-sayuran"
+                                            }
+                                        ]
+                                    },
+                                    "daging": {
+                                        "description": "Success get market by string",
+                                        "value": [
+                                            {
+                                                "id": 2,
+                                                "name": "Toko mas Bayu",
+                                                "category" : "daging"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "category not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "makanan kucing": {
+                                        "description": "failed to get list of category or seller",
+                                        "value": {
+                                            "message": "category or seller not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login" : {
+            "post" : {
+                "tags": ["User"],
+                "summary": "To Login",
+                "description": "Login and get JWT Token",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content" : {
+                        "application/json":{
+                            "schema":{
+                                "$ref" : "#/components/schemas/Login"
+                            },
+                            "examples": {
+                                "User1" : {
+                                    "description": "Example User1 login",
+                                    "value":{
+                                        "email/username" : "tono@123",
+                                        "password" : "tonobros"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "Success Login",
+                        "content": {
+                            "application/json" :{
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/LoginSuccess"
+                                },
+                                "examples":{
+                                    "User1" : {
+                                        "description": "Login Success",
+                                        "value":{
+                                            "email/username" : "tono@123",
+                                            "token" : "asdasdqnwdin"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/cart/{id_cart}": {
             "get": {
                 "security": [
@@ -399,7 +710,96 @@
         }
     },
     "components": {
+        "parameters" : {
+            "UserId" : {
+                "name" : "UserId",
+                "in": "path",
+                "required": true,
+                "description": "User id for login",
+                "schema": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 10
+                },
+                "examples": {
+                    "Tono": {
+                        "description" : "sample user id by user tono",
+                        "value" : 1
+                    }
+                }
+            },
+            "MarketName" : {
+                "name" : "Market Name",
+                "in" : "path",
+                "required": true,
+                "description": "string for searching a market",
+                "schema" : {},
+                "examples": {
+                    "pasar" : {
+                        "description": "search market by string 'pasar'",
+                        "value" : "pasar"
+                    },
+                    "edan" : {
+                        "description": "search market by string 'edan'",
+                        "value" : "edan"
+                    }
+                }
+            },
+            "CategoryList" : {
+                "name" : "Category",
+                "in" : "path",
+                "required": true,
+                "description": "string for searching a category or seller",
+                "schema" : {},
+                "examples": {
+                    "sayur" : {
+                        "description": "search category by string 'sayur'",
+                        "value" : "sayur"
+                    },
+                    "daging" : {
+                        "description": "search category by string 'daging'",
+                        "value" : "daging"
+                    }
+                }
+            },
+            "MarketId" : {
+                "name" : "Market Id",
+                "in" : "path",
+                "required": true,
+                "description": "id for get data from market",
+                "schema" : {},
+                "examples": {
+                    "Market a" : {
+                        "description": "get data from market by id '1'",
+                        "value" : "1"
+                    }
+                }
+            }
+        },
         "schemas": {
+            "Login": {
+                "type": "object",
+                "properties": {
+                    "email/username": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "number",
+                        "format": "int32"
+                    }
+                }
+            },
+            "LoginSuccess" : {
+                "type": "object",
+                "properties": {
+                    "email/username" : {
+                        "type": "string"
+                    },
+                    "Token" : {
+                        "type": "string"
+                    }
+                }
+            },
             "MarketList": {
                 "type": "object",
                 "properties": {
