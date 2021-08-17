@@ -72,6 +72,7 @@
                 }
             }
         },
+<<<<<<< HEAD
         "/markets/{market_name}" :{
             "get" : {
                 "tags" : ["Market"],
@@ -135,12 +136,92 @@
                                                 "id": 2,
                                                 "name": "Pasar Edan",
                                                 "address" : "Bekasi"
+=======
+        "/cart/{id_cart}": {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Cart"],
+                "summary": "Get all products in a cart",
+                "description": "Reviewing chosen products in a cart",
+                "parameters": [
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get all products in a cart",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductsInCartList"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Example success get all products in a cart",
+                                        "value": [
+                                            {
+                                                "message": "success get all products by cart id",
+                                                "cart": {
+                                                    "id": 2,
+                                                    "customer_id": 3,
+                                                    "status": "ordered",
+                                                    "total_price": 70000,
+                                                    "total_quantity": 9
+                                                },
+                                                "seller": [
+                                                    {
+                                                        "id": 5,
+                                                        "name": "Toko Ibu Ani",
+                                                        "category_name": "Sayur-Sayuran",
+                                                        "products": [
+                                                            {
+                                                                "id": 5,
+                                                                "name": "Tomat",
+                                                                "price": 5000,
+                                                                "quantity": 1,
+                                                                "description": "Tomat"
+                                                            },
+                                                            {
+                                                                "id": 6,
+                                                                "name": "Kangkung",
+                                                                "price": 5000,
+                                                                "quantity": 2,
+                                                                "description": "Kangkung"
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "id": 7,
+                                                        "name": "Toko Pak Paijo",
+                                                        "category_name": "Ayam",
+                                                        "products": [
+                                                            {
+                                                                "id": 1,
+                                                                "name": "Ayam Potong",
+                                                                "price": 45000,
+                                                                "quantity": 1,
+                                                                "description": "Ayam potong 1 ekor"
+                                                            },
+                                                            {
+                                                                "id": 3,
+                                                                "name": "Ati Ampela",
+                                                                "price": 2000,
+                                                                "quantity": 5,
+                                                                "description": "Ati ampela"
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+>>>>>>> a143a41c15e7535e8d5127735a20c9085c7b12e8
                                             }
                                         ]
                                     }
                                 }
                             }
                         }
+<<<<<<< HEAD
                     },
                     "404": {
                         "description": "Market not Found",
@@ -164,10 +245,15 @@
                                 }
                             }
                         }
+=======
+                        
+                        
+>>>>>>> a143a41c15e7535e8d5127735a20c9085c7b12e8
                     }
                 }
             }
         },
+<<<<<<< HEAD
         "/markets/{market_id}" :{
             "get" : {
                 "tags" : ["Market"],
@@ -215,13 +301,93 @@
                                                 "category" : "daging"
                                             }
                                         ]
+=======
+        "/cart/{id_cart}/{id_product}": {
+            "delete": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Cart"],
+                "summary": "Delete product in a cart",
+                "description": "Deleting chosen product from a cart",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id_cart",
+                        "required": true,
+                        "description": "Id cart for delete chosen products from a cart",
+                        "schema": {
+                            "type": "integer",
+                            "minLength": 1,
+                            "maxLength": 10
+                        },
+                        "examples": {
+                            "Cart 1": {
+                                "description": "sample cart id for delete chosen products from a cart",
+                                "value": 1
+                            },
+                            "Cart 2": {
+                                "description": "sample cart id for delete chosen products from a cart",
+                                "value": 2
+                            }
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "id_product",
+                        "required": true,
+                        "description": "Id product for delete chosen products from a cart",
+                        "schema": {
+                            "type": "integer",
+                            "minLength": 1,
+                            "maxLength": 10
+                        },
+                        "examples": {
+                            "Product 1": {
+                                "description": "sample product id for delete chosen products from a cart",
+                                "value": 1
+                            },
+                            "Product 2": {
+                                "description": "sample product id for delete chosen products from a cart",
+                                "value": 2
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success delete chosen product from a cart",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DeletedProductList"
+                                    
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Success delete chosen product from a cart",
+                                        "value": {
+                                            "message": "Success delete chosen product from a cart",
+                                            "id": 5,
+                                            "name": "Tomat",
+                                            "price": 5000,
+                                            "quantity": 1,
+                                            "description": "Tomat"
+                                        }
+>>>>>>> a143a41c15e7535e8d5127735a20c9085c7b12e8
                                     }
                                 }
                             }
                         }
                     },
                     "404": {
+<<<<<<< HEAD
                         "description": "Market not Found",
+=======
+                        "description": "Product not found",
+>>>>>>> a143a41c15e7535e8d5127735a20c9085c7b12e8
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -233,10 +399,17 @@
                                     }
                                 },
                                 "examples": {
+<<<<<<< HEAD
                                     "id : 999": {
                                         "description": "Failed to get list category or seller from market",
                                         "value": {
                                             "message": "Market not found"
+=======
+                                    "failed": {
+                                        "description": "Failed delete chosen product from a cart",
+                                        "value": {
+                                            "message": "Product not found"
+>>>>>>> a143a41c15e7535e8d5127735a20c9085c7b12e8
                                         }
                                     }
                                 }
@@ -246,6 +419,7 @@
                 }
             }
         },
+<<<<<<< HEAD
         "/markets/{market_id}/{category}" :{
             "get" : {
                 "tags" : ["Market"],
@@ -311,6 +485,44 @@
                     },
                     "404": {
                         "description": "category not Found",
+=======
+        "/payment/{id_payment}": {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Payment Method"],
+                "summary": "Get payment method by id",
+                "description": "Choosing payment Method",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id_payment",
+                        "required": true,
+                        "description": "Id payment for choosing payment Method",
+                        "schema": {
+                            "type": "integer",
+                            "minLength": 1,
+                            "maxLength": 10
+                        },
+                        "examples": {
+                            "1": {
+                                "description": "sample payment id",
+                                "value": "Transfer BCA"
+                            },
+                            "2": {
+                                "description": "sample payment id",
+                                "value": "COD"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get payment method by id",
+>>>>>>> a143a41c15e7535e8d5127735a20c9085c7b12e8
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -318,15 +530,36 @@
                                     "properties": {
                                         "message": {
                                             "type": "string"
+<<<<<<< HEAD
+=======
+                                        },
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+>>>>>>> a143a41c15e7535e8d5127735a20c9085c7b12e8
                                         }
                                     }
                                 },
                                 "examples": {
+<<<<<<< HEAD
                                     "makanan kucing": {
                                         "description": "failed to get list of category or seller",
                                         "value": {
                                             "message": "category or seller not found"
                                         }
+=======
+                                    "success": {
+                                        "description": "Example success get payment method by id",
+                                        "value": [
+                                            {
+                                                "message": "success get payment method by id",
+                                                "id": 2,
+                                                "name": "COD"
+                                            }
+                                        ]
+>>>>>>> a143a41c15e7535e8d5127735a20c9085c7b12e8
                                     }
                                 }
                             }
@@ -335,6 +568,7 @@
                 }
             }
         },
+<<<<<<< HEAD
         "/user/{userId}" : {
             "post" : {
                 "tags": ["Users"],
@@ -378,6 +612,60 @@
                                         "value":{
                                             "email/username" : "tono@123",
                                             "token" : "asdasdqnwdin"
+=======
+        "/user/{id_user}": {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["User"],
+                "summary": "Get detail user by id",
+                "description": "Get detail user for user profile",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id_user",
+                        "required": true,
+                        "description": "Id user for get detail user",
+                        "schema": {
+                            "type": "integer",
+                            "minLength": 1,
+                            "maxLength": 10
+                        },
+                        "examples": {
+                            "1": {
+                                "description": "sample user id",
+                                "value": "1"
+                            },
+                            "2": {
+                                "description": "sample user id",
+                                "value": "2"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get detail user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DetailUserList"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Example success get detail user",
+                                        "value":
+                                        {
+                                            "message": "Success get detail user",
+                                            "id": 1,
+                                            "email": "dewi@gmail.com",
+                                            "name": "Dewi",
+                                            "address": "Jl. QQQQ no 292, Bogor",
+                                            "gender": "F"
+>>>>>>> a143a41c15e7535e8d5127735a20c9085c7b12e8
                                         }
                                     }
                                 }
@@ -386,7 +674,11 @@
                     }
                 }
             }
+<<<<<<< HEAD
         }       
+=======
+        }
+>>>>>>> a143a41c15e7535e8d5127735a20c9085c7b12e8
     },
     "components": {
         "parameters" : {
@@ -476,6 +768,7 @@
                     "$ref": "#/components/schemas/MarketList"
                 }
             },
+<<<<<<< HEAD
             "Login": {
                 "type": "object",
                 "properties": {
@@ -498,6 +791,130 @@
                         "type": "string"
                     }
                 }
+=======
+            "ProductsInCartList": {
+                "type": "object",
+                "properties": {
+                    "cart": {
+                        "type": "object",
+                        "items": {
+                            "$ref": "#/components/schemas/ArrayCartList"
+                        }
+                    },
+                    "seller": {
+                        "type": "object",
+                        "items": {
+                            "$ref": "#/components/schemas/ArraySellerInCartList"
+                        }
+                    }
+                }
+            },
+            "ArrayCartList": {
+                "type": "object",
+                "properties": {
+                    "id":{
+                        "type": "integer"
+                    },
+                    "customer_id": {
+                        "type": "integer"
+                    },
+                    "status" : {
+                        "type": "string"
+                    },
+                    "total_price": {
+                        "type": "integer"
+                    },
+                    "total_quantity": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "ArraySellerInCartList": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "category_name": {
+                        "type": "string"
+                    },
+                    "products": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ArrayProductsInCartList"
+                        }
+                    }
+                }
+            },
+            "ArrayProductsInCartList": {
+                "type": "object",
+                "properties": {
+                    "id" : {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "integer"
+                    },
+                    "quantity": {
+                        "type": "integer"
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                }
+            },
+            "DetailUserList": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "integer"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "address": {
+                        "type": "string"
+                    },
+                    "gender": {
+                        "type": "string"
+                    }
+                }
+            },
+            "DeletedProductList": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "integer"
+                    },
+                    "quantity": {
+                        "type": "integer"
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                } 
+>>>>>>> a143a41c15e7535e8d5127735a20c9085c7b12e8
             }
         }
     }
