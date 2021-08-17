@@ -1,0 +1,100 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "E-T Market API",
+        "description": "OPEN API for E-T Market Project",
+        "version": "1",
+        "contact": {
+            "name": "E-T Market Dev",
+            "email": "etmarket@business.co.id",
+            "url": "etmarket.com"
+        }
+    },
+    "externalDocs": {
+        "description": "Website e-t market",
+        "url": "https://etmarket.com"
+    },
+    "servers": [
+        {
+            "description": "E-T Market API Server",
+            "url": "https://{environment}.etmarket.com/api/v1/",
+            "variables": {
+                "environment": {
+                    "default": "dev",
+                    "enum": [
+                        "dev"
+                    ]
+                }
+            }
+        }
+    ],
+    "paths": {
+        "/markets": {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Market"],
+                "summary": "Get all list of markets",
+                "description": "",
+                "parameters": [
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get all markets",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArrayMarketList"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Example success get all todo list",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "name": "Pasar malam",
+                                                "address": "Bandung"
+                                            },
+                                            {
+                                                "id": 2,
+                                                "name": "Pasar Edan",
+                                                "address": "Bekasi"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }       
+    },
+    "components": {
+        "schemas": {
+            "MarketList": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "address": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ArrayMarketList": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/MarketList"
+                }
+            }
+        }
+    }
+} 
