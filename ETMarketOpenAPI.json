@@ -853,10 +853,203 @@
                     }
                 }
             }
+        },
+        "/markets/{market_id}/shop/{shop_id}": {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Market"],
+                "summary": "Get all products in selected shop",
+                "description": "",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ShopId"
+                    }
+                ],
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {},
+                            "examples":{
+                                "Market a": {
+                                    "description": "Example get all products from selected shop",
+                                    "value": {
+                                        "Id": "1",
+                                        "shopId": "2"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success get product by shop id",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "Toko Jajang": {
+                                        "description": "Success get all product in specific shop",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "name": "Toko Jajang",
+                                                "product": [
+                                                    {
+                                                        "$ref" : "#/components/schemas/arrayProductShop"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Toko Udin": {
+                                        "description": "Success get all product in specific shop",
+                                        "value": [
+                                            {
+                                                "id": 2,
+                                                "name": "Toko Udin",
+                                                "product": [
+                                                    {
+                                                        "$ref" : "#/components/schemas/arrayProductShop"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Shop not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "failed": {
+                                        "description": "failed to get list of product",
+                                        "value": {
+                                            "message": "seller not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/markets/{market_id}/{shop_id}/{product_id}" : {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Market"],
+                "summary": "Get specific product in selected shop",
+                "description": "",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ShopId"
+                    }
+                ],
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {},
+                            "examples":{
+                                "Market a": {
+                                    "description": "Example get specific products from selected shop",
+                                    "value": {
+                                        "Id": "1",
+                                        "shop_id": "2",
+                                        "product_id": "1"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success get a specific product from shop id",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "Toko Jajang": {
+                                        "description": "Success get a product in specific shop",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "name": "Toko Jajang",
+                                                "product": [
+                                                    {
+                                                        "$ref" : "#/components/schemas/ProductShop"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Toko Udin": {
+                                        "description": "Success get all product in specific shop",
+                                        "value": [
+                                            {
+                                                "id": 2,
+                                                "name": "Toko Udin",
+                                                "product": [
+                                                    {
+                                                        "$ref" : "#/components/schemas/ProductShop"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Shop or product not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "1": {
+                                        "description": "failed to get specific product",
+                                        "value": {
+                                            "message": "product not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
-    
-    
     "components": {
         "parameters" : {
             "UserId" : {
@@ -920,6 +1113,25 @@
                     "Market a" : {
                         "description": "get data from market by id '1'",
                         "value" : "1"
+                    }
+                }
+            },
+            "ShopId": {
+                "name": "shopId",
+                "in": "path",
+                "required": true,
+                "description": "Cart id for get shop details",
+                "schema": {
+                    "type": "object" 
+                },
+                "examples": {
+                    "java": {
+                        "description": "sample todo list id for java",
+                        "value": 1
+                    },
+                    "php": {
+                        "description": "sample todo list id for php",
+                        "value": 2
                     }
                 }
             },
@@ -1142,6 +1354,35 @@
                     "id_product": {
                         "type": "integer"
                     }
+                }
+            },
+            "ProductShop": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "category": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "integer"
+                    },
+                    "quantity": {
+                        "type": "integer"
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                }
+            },
+            "arrayProductShop":{
+                "type": "array",
+                "items":{
+                    "$ref": "#/components/schemas/ProductShop"
                 }
             },
             "ArrayCompleteCartList": {
