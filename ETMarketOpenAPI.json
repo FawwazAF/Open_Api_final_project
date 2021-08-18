@@ -71,9 +71,176 @@
                     }
                 }
             }
-        }       
+        }, 
+        "/cart/inprogress": {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Cart"],
+                "summary": "Get list of all inprogress carts",
+                "description": "",
+                "parameters": [
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get all inprogress carts",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArrayCompleteCartList"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Example success get all inprogress carts",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "id_shop": "11",
+                                                "id_product": "21"
+                                            } 
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/cart/complete": {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Cart"],
+                "summary": "Get list of all complete carts",
+                "description": "",
+                "parameters": [
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get all complete carts",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArrayCompleteCartList"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Example success get all complete carts",
+                                        "value": [
+                                            {
+                                                "id": 2,
+                                                "id_shop": "12",
+                                                "id_product": "22"
+                                            }, 
+                                            {
+                                                "id": 3,
+                                                "id_shop": "13",
+                                                "id_product": "23"
+                                            } 
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }, 
+        "/cart/{cartbyId}": {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Cart"],
+                "summary": "Get a cart by spesific Id",
+                "description": "",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/CartId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get cart by Id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Success get cart by Id",
+                                        "value": {
+                                            "success": true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Failed get not found cart",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "failed": {
+                                        "description": "Failed get cart",
+                                        "value": {
+                                            "success": false
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     },
     "components": {
+        "parameters": {
+            "CartId": {
+                "name": "cartId",
+                "in": "path",
+                "required": true,
+                "description": "Cart id for get",
+                "schema": {
+                    "type": "object" 
+                },
+                "examples": {
+                    "java": {
+                        "description": "sample todo list id for java",
+                        "value": 1
+                    },
+                    "php": {
+                        "description": "sample todo list id for php",
+                        "value": 2
+                    }
+                }
+            }
+        },
         "schemas": {
             "MarketList": {
                 "type": "object",
@@ -93,6 +260,46 @@
                 "type": "array",
                 "items": {
                     "$ref": "#/components/schemas/MarketList"
+                }
+            },
+            "InprogressCartList": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "id_shop": {
+                        "type": "integer"
+                    },
+                    "id_product": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "ArrayInprogressCartList": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/InprogressCartList"
+                }
+            },
+            "CompleteCartList": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "id_shop": {
+                        "type": "integer"
+                    },
+                    "id_product": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "ArrayCompleteCartList": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/CompleteCartList"
                 }
             }
         }
