@@ -335,10 +335,103 @@
                 }
             }
         },
-        "/login" : {
+        "/categories": {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Category"],
+                "summary": "Get all list of category",
+                "description": "",
+                "parameters": [
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get all category",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArrayCategoryList"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Example success get all category",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "name": "Sembako"
+                                            },
+                                            {
+                                                "id": 2,
+                                                "name": "Buah-buahan"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/register" : {
             "post" : {
-                "tags": ["User"],
-                "summary": "To Login",
+                "tags": ["Customer"],
+                "summary": "Register for customer",
+                "description": "Create new customer",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content" : {
+                        "application/json":{
+                            "schema":{
+                                "$ref" : "#/components/schemas/Register"
+                            },
+                            "examples": {
+                                "User1" : {
+                                    "description": "Example User1 register",
+                                    "value":{
+                                        "email" : "tono@gmail.com",
+                                        "password" : "tonobros",
+                                        "name": "Tono",
+                                        "address" : "Jl Medan Merdeka",
+                                        "gender": "M"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "Success Register",
+                        "content": {
+                            "application/json" :{
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/RegisterSuccess"
+                                },
+                                "examples":{
+                                    "User1" : {
+                                        "description": "Register Success",
+                                        "value":{
+                                            "id" : "1",
+                                            "email" : "tono@123",
+                                            "name": "Tono"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/login" : {
+            "post" : {
+                "tags": ["Customer"],
+                "summary": "Login for customer",
                 "description": "Login and get JWT Token",
                 "parameters": [],
                 "requestBody": {
@@ -352,7 +445,7 @@
                                 "User1" : {
                                     "description": "Example User1 login",
                                     "value":{
-                                        "email/username" : "tono@123",
+                                        "email" : "tono@gmail.com",
                                         "password" : "tonobros"
                                     }
                                 }
@@ -372,8 +465,845 @@
                                     "User1" : {
                                         "description": "Login Success",
                                         "value":{
-                                            "email/username" : "tono@123",
-                                            "token" : "asdasdqnwdin"
+                                            "id" : "1",
+                                            "email" : "tono@123",
+                                            "token" : "asdad53sdq&nw3dinr"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/{customer_id}": {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Customer"],
+                "summary": "Get detail customer by id",
+                "description": "Get detail user for customer profile",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "customer_id",
+                        "required": true,
+                        "description": "Id customer for get detail customer",
+                        "schema": {
+                            "type": "integer",
+                            "minLength": 1,
+                            "maxLength": 10
+                        },
+                        "examples": {
+                            "1": {
+                                "description": "sample customer id",
+                                "value": "1"
+                            },
+                            "2": {
+                                "description": "sample customer id",
+                                "value": "2"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get detail customer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DetailUserList"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Example success get detail customer",
+                                        "value":
+                                        {
+                                            "id": 1,
+                                            "email": "dewi@gmail.com",
+                                            "name": "Dewi",
+                                            "address": "Jl. QQQQ no 292, Bogor",
+                                            "gender": "F"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "tags": ["Customer"],
+                "summary": "Update detail customer",
+                "description": "Edit profile for customer",
+                "parameters": [
+                    
+                    {
+                        "in": "path",
+                        "name": "customer_id",
+                        "required": true,
+                        "description": "Id customer for update detail customer",
+                        "schema": {
+                            "type": "integer",
+                            "minLength": 1,
+                            "maxLength": 10
+                        },
+                        "examples": {
+                            "1": {
+                                "description": "sample customer id",
+                                "value": "1"
+                            },
+                            "2": {
+                                "description": "sample customer id",
+                                "value": "2"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content" : {
+                        "application/json":{
+                            "schema":{
+                                "$ref" : "#/components/schemas/Register"
+                            },
+                            "examples": {
+                                "User1" : {
+                                    "description": "Example User1 update detail",
+                                    "value":{
+                                        "email" : "tono@gmail.com",
+                                        "password" : "tonobros",
+                                        "name": "Tono",
+                                        "address" : "Jl Medan Merdeka",
+                                        "gender": "M"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "Success update customer",
+                        "content": {
+                            "application/json" :{
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/UpdateSuccess"
+                                },
+                                "examples":{
+                                    "User1" : {
+                                        "description": "Update Success",
+                                        "value":{
+                                            "id" : "1",
+                                            "email" : "tono@gmail.com",
+                                            "password" : "tonobros",
+                                            "name": "Tono",
+                                            "address" : "Jl Medan Merdeka",
+                                            "gender": "M"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/logout/{customer_id}": {
+            "put" : {
+                "tags": ["Customer"],
+                "summary": "Logout",
+                "description": "Logout for customer",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "customer_id",
+                        "required": true,
+                        "description": "Id customer for logout",
+                        "schema": {
+                            "type": "integer",
+                            "minLength": 1,
+                            "maxLength": 10
+                        },
+                        "examples": {
+                            "1": {
+                                "description": "sample customer id",
+                                "value": "1"
+                            },
+                            "2": {
+                                "description": "sample customer id",
+                                "value": "2"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200":{
+                        "description": "Success logout",
+                        "content": {
+                            "application/json" :{
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/UpdateSuccess"
+                                },
+                                "examples":{
+                                    "User1" : {
+                                        "description": "Logout Success",
+                                        "value":{
+                                            "id" : "1",
+                                            "email" : "tono@gmail.com",
+                                            "password" : "tonobros",
+                                            "name": "Tono",
+                                            "address" : "Jl Medan Merdeka",
+                                            "gender": "M"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/seller/register" : {
+            "post" : {
+                "tags": ["Seller"],
+                "summary": "Register for seller",
+                "description": "Create new seller",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content" : {
+                        "application/json":{
+                            "schema":{
+                                "$ref" : "#/components/schemas/RegisterSeller"
+                            },
+                            "examples": {
+                                "User1" : {
+                                    "description": "Example User1 register",
+                                    "value":{
+                                        "market_id": 2,
+                                        "category_id": 2,
+                                        "email" : "tono@gmail.com",
+                                        "password" : "tonobros",
+                                        "name": "Tono",
+                                        "address" : "Jl Medan Merdeka",
+                                        "gender": "M"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "Success Register",
+                        "content": {
+                            "application/json" :{
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/RegisterSuccess"
+                                },
+                                "examples":{
+                                    "User1" : {
+                                        "description": "Register Success",
+                                        "value":{
+                                            "id" : "1",
+                                            "email" : "tono@123",
+                                            "name": "Tono"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/seller/login" : {
+            "post" : {
+                "tags": ["Seller"],
+                "summary": "Login for seller",
+                "description": "Login and get JWT Token",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content" : {
+                        "application/json":{
+                            "schema":{
+                                "$ref" : "#/components/schemas/Login"
+                            },
+                            "examples": {
+                                "User1" : {
+                                    "description": "Example User1 login",
+                                    "value":{
+                                        "email" : "bambang@gmail.com",
+                                        "password" : "bam123"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "Success Login",
+                        "content": {
+                            "application/json" :{
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/LoginSuccess"
+                                },
+                                "examples":{
+                                    "User1" : {
+                                        "description": "Login Success",
+                                        "value":{
+                                            "id" : "5",
+                                            "email" : "bambang@gmail.com",
+                                            "token" : "yda567q0d&nw3dinr"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/seller/{seller_id}": {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Seller"],
+                "summary": "Get detail seller by id",
+                "description": "Get detail user for seller profile",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "seller_id",
+                        "required": true,
+                        "description": "Id seller for get detail seller",
+                        "schema": {
+                            "type": "integer",
+                            "minLength": 1,
+                            "maxLength": 10
+                        },
+                        "examples": {
+                            "1": {
+                                "description": "sample seller id",
+                                "value": "1"
+                            },
+                            "2": {
+                                "description": "sample seller id",
+                                "value": "2"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get detail seller",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DetailUserList"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Example success get detail seller",
+                                        "value":
+                                        {
+                                            "id": 1,
+                                            "email": "dewi@gmail.com",
+                                            "name": "Dewi",
+                                            "address": "Jl. QQQQ no 292, Bogor",
+                                            "gender": "F"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "tags": ["Seller"],
+                "summary": "Update detail seller",
+                "description": "Edit profile for seller",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content" : {
+                        "application/json":{
+                            "schema":{
+                                "$ref" : "#/components/schemas/Register"
+                            },
+                            "examples": {
+                                "User1" : {
+                                    "description": "Example User1 update detail",
+                                    "value":{
+                                        "email" : "tono@gmail.com",
+                                        "password" : "tonobros",
+                                        "name": "Tono",
+                                        "address" : "Jl Medan Merdeka",
+                                        "gender": "M"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "Success update seller",
+                        "content": {
+                            "application/json" :{
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/UpdateSuccess"
+                                },
+                                "examples":{
+                                    "User1" : {
+                                        "description": "Update Success",
+                                        "value":{
+                                            "id" : "1",
+                                            "email" : "tono@gmail.com",
+                                            "password" : "tonobros",
+                                            "name": "Tono",
+                                            "address" : "Jl Medan Merdeka",
+                                            "gender": "M"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/seller/orderlist": {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Seller"],
+                "summary": "Get all order list",
+                "description": "",
+                "parameters": [
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get all order list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArrayOrderList"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Example success get all order list",
+                                        "value": [
+                                            {
+                                                "driver_name": "Bambang",
+                                                "product_name": "Semangka",
+                                                "qty": 4,
+                                                "price": 40000
+                                            },
+                                            {
+                                                "driver_name": "Bambang",
+                                                "product_name": "Semangka",
+                                                "qty": 4,
+                                                "price": 40000
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/seller/orderlist/{order_id}": {
+            "put": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Seller"],
+                "summary": "Update status order",
+                "description": "",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "order_id",
+                        "required": true,
+                        "description": "Id order for update status order",
+                        "schema": {
+                            "type": "integer",
+                            "minLength": 1,
+                            "maxLength": 10
+                        },
+                        "examples": {
+                            "1": {
+                                "description": "sample order id",
+                                "value": "1"
+                            },
+                            "2": {
+                                "description": "sample order id",
+                                "value": "2"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success update status order",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UpdateStatusSuccess"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Example success update status order",
+                                        "value": 
+                                        {
+                                            "checkout_id": 1,
+                                            "product_id": 2,
+                                            "qty": 4,
+                                            "price": 40000,
+                                            "status": "completed"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/seller/logout/{seller_id}": {
+            "put" : {
+                "tags": ["Seller"],
+                "summary": "Logout",
+                "description": "Logout for seller",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "seller_id",
+                        "required": true,
+                        "description": "Id seller for logout",
+                        "schema": {
+                            "type": "integer",
+                            "minLength": 1,
+                            "maxLength": 10
+                        },
+                        "examples": {
+                            "1": {
+                                "description": "sample seller id",
+                                "value": "1"
+                            },
+                            "2": {
+                                "description": "sample seller id",
+                                "value": "2"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200":{
+                        "description": "Success logout",
+                        "content": {
+                            "application/json" :{
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/UpdateSuccess"
+                                },
+                                "examples":{
+                                    "User1" : {
+                                        "description": "Logout Success",
+                                        "value":{
+                                            "id" : "1",
+                                            "email" : "tono@gmail.com",
+                                            "password" : "tonobros",
+                                            "name": "Tono",
+                                            "address" : "Jl Medan Merdeka",
+                                            "gender": "M"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/driver/register" : {
+            "post" : {
+                "tags": ["Driver"],
+                "summary": "Register for driver",
+                "description": "Create new driver",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content" : {
+                        "application/json":{
+                            "schema":{
+                                "$ref" : "#/components/schemas/Register"
+                            },
+                            "examples": {
+                                "User1" : {
+                                    "description": "Example User1 register",
+                                    "value":{
+                                        "email" : "tono@gmail.com",
+                                        "password" : "tonobros",
+                                        "name": "Tono",
+                                        "address" : "Jl Medan Merdeka",
+                                        "gender": "M"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "Success Register",
+                        "content": {
+                            "application/json" :{
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/RegisterSuccess"
+                                },
+                                "examples":{
+                                    "User1" : {
+                                        "description": "Register Success",
+                                        "value":{
+                                            "id" : "1",
+                                            "email" : "tono@123",
+                                            "name": "Tono"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/driver/login" : {
+            "post" : {
+                "tags": ["Driver"],
+                "summary": "Login for driver",
+                "description": "Login and get JWT Token",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content" : {
+                        "application/json":{
+                            "schema":{
+                                "$ref" : "#/components/schemas/Login"
+                            },
+                            "examples": {
+                                "User1" : {
+                                    "description": "Example User1 login",
+                                    "value":{
+                                        "email" : "kiki@gmail.com",
+                                        "password" : "kiki822"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "Success Login",
+                        "content": {
+                            "application/json" :{
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/LoginSuccess"
+                                },
+                                "examples":{
+                                    "User1" : {
+                                        "description": "Login Success",
+                                        "value":{
+                                            "id" : "3",
+                                            "email" : "kiki@gmail.com",
+                                            "token" : "yda567q0d&nw3dinr"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/driver/{driver_id}": {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Driver"],
+                "summary": "Get detail driver by id",
+                "description": "Get detail driver for driver profile",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "driver_id",
+                        "required": true,
+                        "description": "Id driver for get detail driver",
+                        "schema": {
+                            "type": "integer",
+                            "minLength": 1,
+                            "maxLength": 10
+                        },
+                        "examples": {
+                            "1": {
+                                "description": "sample driver id",
+                                "value": "1"
+                            },
+                            "2": {
+                                "description": "sample driver id",
+                                "value": "2"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get detail driver",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DetailUserList"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Example success get detail driver",
+                                        "value":
+                                        {
+                                            "id": 1,
+                                            "email": "dewi@gmail.com",
+                                            "name": "Dewi",
+                                            "address": "Jl. QQQQ no 292, Bogor",
+                                            "gender": "F"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "tags": ["Driver"],
+                "summary": "Update detail driver",
+                "description": "Edit profile for driver",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content" : {
+                        "application/json":{
+                            "schema":{
+                                "$ref" : "#/components/schemas/Register"
+                            },
+                            "examples": {
+                                "User1" : {
+                                    "description": "Example User1 update detail",
+                                    "value":{
+                                        "email" : "tono@gmail.com",
+                                        "password" : "tonobros",
+                                        "name": "Tono",
+                                        "address" : "Jl Medan Merdeka",
+                                        "gender": "M"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "Success update driver",
+                        "content": {
+                            "application/json" :{
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/UpdateSuccess"
+                                },
+                                "examples":{
+                                    "User1" : {
+                                        "description": "Update Success",
+                                        "value":{
+                                            "id" : "1",
+                                            "email" : "tono@gmail.com",
+                                            "password" : "tonobros",
+                                            "name": "Tono",
+                                            "address" : "Jl Medan Merdeka",
+                                            "gender": "M"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/driver/logout/{driver_id}": {
+            "put" : {
+                "tags": ["Driver"],
+                "summary": "Logout",
+                "description": "Logout for driver",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "driver_id",
+                        "required": true,
+                        "description": "Id driver for logout",
+                        "schema": {
+                            "type": "integer",
+                            "minLength": 1,
+                            "maxLength": 10
+                        },
+                        "examples": {
+                            "1": {
+                                "description": "sample driver id",
+                                "value": "1"
+                            },
+                            "2": {
+                                "description": "sample driver id",
+                                "value": "2"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200":{
+                        "description": "Success logout",
+                        "content": {
+                            "application/json" :{
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/UpdateSuccess"
+                                },
+                                "examples":{
+                                    "User1" : {
+                                        "description": "Logout Success",
+                                        "value":{
+                                            "id" : "1",
+                                            "email" : "tono@gmail.com",
+                                            "password" : "tonobros",
+                                            "name": "Tono",
+                                            "address" : "Jl Medan Merdeka",
+                                            "gender": "M"
                                         }
                                     }
                                 }
@@ -408,7 +1338,6 @@
                                         "description": "Example success get all products in a cart",
                                         "value": [
                                             {
-                                                "message": "success get all products by cart id",
                                                 "cart": {
                                                     "id": 2,
                                                     "customer_id": 3,
@@ -539,7 +1468,6 @@
                                     "success": {
                                         "description": "Success delete chosen product from a cart",
                                         "value": {
-                                            "message": "Success delete chosen product from a cart",
                                             "id": 5,
                                             "name": "Tomat",
                                             "price": 5000,
@@ -577,7 +1505,7 @@
                 }
             }
         },
-        "/payment/{id_payment}": {
+        "/payments": {
             "get": {
                 "security": [
                     {
@@ -585,42 +1513,17 @@
                     }
                 ],
                 "tags": ["Payment Method"],
-                "summary": "Get payment method by id",
-                "description": "Choosing payment Method",
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id_payment",
-                        "required": true,
-                        "description": "Id payment for choosing payment Method",
-                        "schema": {
-                            "type": "integer",
-                            "minLength": 1,
-                            "maxLength": 10
-                        },
-                        "examples": {
-                            "1": {
-                                "description": "sample payment id",
-                                "value": "Transfer BCA"
-                            },
-                            "2": {
-                                "description": "sample payment id",
-                                "value": "COD"
-                            }
-                        }
-                    }
-                ],
+                "summary": "Get all payment method",
+                "description": "Get all payment method for payment",
+                "parameters": [],
                 "responses": {
                     "200": {
-                        "description": "Success get payment method by id",
+                        "description": "Success get all payment method",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "object",
                                     "properties": {
-                                        "message": {
-                                            "type": "string"
-                                        },
                                         "id": {
                                             "type": "integer"
                                         },
@@ -631,75 +1534,13 @@
                                 },
                                 "examples": {
                                     "success": {
-                                        "description": "Example success get payment method by id",
+                                        "description": "Example success get payment method",
                                         "value": [
                                             {
-                                                "message": "success get payment method by id",
                                                 "id": 2,
                                                 "name": "COD"
                                             }
                                         ]
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/user/{id_user}": {
-            "get": {
-                "security": [
-                    {
-                        "JWTAuth": []
-                    }
-                ],
-                "tags": ["User"],
-                "summary": "Get detail user by id",
-                "description": "Get detail user for user profile",
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id_user",
-                        "required": true,
-                        "description": "Id user for get detail user",
-                        "schema": {
-                            "type": "integer",
-                            "minLength": 1,
-                            "maxLength": 10
-                        },
-                        "examples": {
-                            "1": {
-                                "description": "sample user id",
-                                "value": "1"
-                            },
-                            "2": {
-                                "description": "sample user id",
-                                "value": "2"
-                            }
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success get detail user",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/DetailUserList"
-                                },
-                                "examples": {
-                                    "success": {
-                                        "description": "Example success get detail user",
-                                        "value":
-                                        {
-                                            "message": "Success get detail user",
-                                            "id": 1,
-                                            "email": "dewi@gmail.com",
-                                            "name": "Dewi",
-                                            "address": "Jl. QQQQ no 292, Bogor",
-                                            "gender": "F"
-                                        }
                                     }
                                 }
                             }
@@ -1156,25 +1997,113 @@
             }
         },
         "schemas": {
-            "Login": {
+            "Register": {
                 "type": "object",
                 "properties": {
-                    "email/username": {
+                    "email": {
                         "type": "string"
                     },
                     "password": {
-                        "type": "number",
-                        "format": "int32"
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "address": {
+                        "type": "string"
+                    },
+                    "gender": {
+                        "type": "string"
+                    }
+                }
+            },
+            "RegisterSuccess" : {
+                "type": "object",
+                "properties": {
+                    "id" : {
+                        "type": "integer"
+                    },
+                    "email" : {
+                        "type": "string"
+                    },
+                    "name" : {
+                        "type": "string"
+                    }
+                }
+            },
+            "RegisterSeller": {
+                "type": "object",
+                "properties": {
+                    "market_id": {
+                        "type": "integer"
+                    },
+                    "category_id": {
+                        "type": "integer"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "address": {
+                        "type": "string"
+                    },
+                    "gender": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Login": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
                     }
                 }
             },
             "LoginSuccess" : {
                 "type": "object",
                 "properties": {
-                    "email/username" : {
+                    "id" : {
+                        "type": "integer"
+                    },
+                    "email" : {
+                        "type": "string"
+                    },
+                    "name" : {
                         "type": "string"
                     },
                     "Token" : {
+                        "type": "string"
+                    }
+                }
+            },
+            "UpdateSuccess" : {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "address": {
+                        "type": "string"
+                    },
+                    "gender": {
                         "type": "string"
                     }
                 }
@@ -1189,6 +2118,66 @@
                         "type": "string"
                     },
                     "address": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ArrayCategoryList": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/CategoryList"
+                }
+            },
+            "CategoryList": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ArrayOrderList": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/OrderList"
+                }
+            },
+            "OrderList": {
+                "type": "object",
+                "properties": {
+                    "driver_name": {
+                        "type": "string"
+                    },
+                    "product_name": {
+                        "type": "string"
+                    },
+                    "qty": {
+                        "type": "integer"
+                    },
+                    "price": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "UpdateStatusSuccess": {
+                "type": "object",
+                "properties": {
+                    "checkout_id": {
+                        "type": "integer"
+                    },
+                    "product_id": {
+                        "type": "integer"
+                    },
+                    "qty": {
+                        "type": "integer"
+                    },
+                    "price": {
+                        "type": "integer"
+                    },
+                    "status": {
                         "type": "string"
                     }
                 }
@@ -1279,9 +2268,6 @@
             "DetailUserList": {
                 "type": "object",
                 "properties": {
-                    "message": {
-                        "type": "string"
-                    },
                     "id": {
                         "type": "integer"
                     },
@@ -1302,9 +2288,6 @@
             "DeletedProductList": {
                 "type": "object",
                 "properties": {
-                    "message": {
-                        "type": "string"
-                    },
                     "id": {
                         "type": "integer"
                     },
