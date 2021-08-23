@@ -72,7 +72,6 @@
                 }
             }
         },
-<<<<<<< HEAD
         "/markets/{market_name}" :{
             "get" : {
                 "tags" : ["Market"],
@@ -136,7 +135,1582 @@
                                                 "id": 2,
                                                 "name": "Pasar Edan",
                                                 "address" : "Bekasi"
-=======
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Market not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "pasar wadidaw": {
+                                        "description": "Failed to get list market",
+                                        "value": {
+                                            "message": "Market not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/checkout": {
+            "post": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Checkout"],
+                "summary": "Make a checkout after filling the cart",
+                "description": "",
+                "parameters": [
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success make a checkout",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArrayMarketList"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Success make a checkout",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "total_qty": 2,
+                                                "total_price": 55000,
+                                                "customer_id": 1,
+                                                "payment_id": 1,
+                                                "status": "searching",
+                                                "delivery_price": 5000
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "user not Found",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "id : 0": {
+                                        "description": "Failed to get user",
+                                        "value": {
+                                            "message": "user not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/payment": {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Checkout"],
+                "summary": "Get list of payment",
+                "description": "",
+                "parameters": [
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get list of payments",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "description": "Success get list of payments",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "name": "BCA"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "payment not Found",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "failed": {
+                                        "description": "Failed to get payment",
+                                        "value": {
+                                            "message": "payment not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/checkout/{checkout_id}": {
+            "put": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Checkout"],
+                "summary": "Finish the transaction",
+                "description": "",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "checkout_id",
+                        "required": true,
+                        "description": "Id checkout to edit checkout",
+                        "schema": {
+                            "type": "integer",
+                            "minLength": 1,
+                            "maxLength": 10
+                        },
+                        "examples": {
+                            "Checkout 1": {
+                                "description": "sample cart id for delete chosen products from a cart",
+                                "value": 1
+                            },
+                            "Checkout 2": {
+                                "description": "sample cart id for delete chosen products from a cart",
+                                "value": 2
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success edit a checkout",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "description": "Success edit a checkout",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "total_qty": 2,
+                                                "total_price": 55000,
+                                                "customer_id": 1,
+                                                "payment_id": 1,
+                                                "status": "completed"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "failed edit checkout",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "checkout_id : 0": {
+                                        "description": "Failed to edit checkout",
+                                        "value": {
+                                            "message": "checkout not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/markets/{market_id}/category" :{
+            "get" : {
+                "tags" : ["Market"],
+                "summary": "Get list category or seller",
+                "description": "Get list category or seller inside a market by certain id",
+                "parameters": [
+                    {
+                        "$ref" : "#/components/parameters/MarketId"
+                    }
+                ],
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema":{},
+                            "examples":{
+                                "Market a" : {
+                                    "description": "Example get list category or seller from market a",
+                                    "value":{
+                                        "Id" : "1"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200" : {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "Market a": {
+                                        "description": "Success get list category or seller by id of market",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "name": "Toko mas Ujang",
+                                                "category" : "sayur-sayuran"
+                                            },
+                                            {
+                                                "id": 2,
+                                                "name": "Toko mas Bayu",
+                                                "category" : "daging"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Market not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "id : 999": {
+                                        "description": "Failed to get list category or seller from market",
+                                        "value": {
+                                            "message": "Market not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/markets/{market_id}/category/{category_name}" :{
+            "get" : {
+                "tags" : ["Market"],
+                "summary": "Get list category or seller",
+                "description": "et list category or seller by string",
+                "parameters": [
+                    {
+                        "$ref" : "#/components/parameters/CategoryList"
+                    }
+                ],
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema":{},
+                            "examples":{
+                                "sayur" : {
+                                    "description": "Example get category name",
+                                    "value":{
+                                        "search" : "sayur"
+                                    }
+                                },
+                                "daging" : {
+                                    "description": "Example get category name",
+                                    "value":{
+                                        "search" : "daging"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200" : {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "sayur": {
+                                        "description": "Success get list category or seller by string",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "name": "Toko mas Ujang",
+                                                "category" : "sayur-sayuran"
+                                            }
+                                        ]
+                                    },
+                                    "daging": {
+                                        "description": "Success get market by string",
+                                        "value": [
+                                            {
+                                                "id": 2,
+                                                "name": "Toko mas Bayu",
+                                                "category" : "daging"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "category not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "makanan kucing": {
+                                        "description": "failed to get list of category or seller",
+                                        "value": {
+                                            "message": "category or seller not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/categories": {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Category"],
+                "summary": "Get all list of category",
+                "description": "",
+                "parameters": [
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get all category",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArrayCategoryList"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Example success get all category",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "name": "Sembako"
+                                            },
+                                            {
+                                                "id": 2,
+                                                "name": "Buah-buahan"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/register" : {
+            "post" : {
+                "tags": ["Customer"],
+                "summary": "Register for customer",
+                "description": "Create new customer",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content" : {
+                        "application/json":{
+                            "schema":{
+                                "$ref" : "#/components/schemas/Register"
+                            },
+                            "examples": {
+                                "User1" : {
+                                    "description": "Example User1 register",
+                                    "value":{
+                                        "email" : "tono@gmail.com",
+                                        "password" : "tonobros",
+                                        "name": "Tono",
+                                        "address" : "Jl Medan Merdeka",
+                                        "gender": "M"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "Success Register",
+                        "content": {
+                            "application/json" :{
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/RegisterSuccess"
+                                },
+                                "examples":{
+                                    "User1" : {
+                                        "description": "Register Success",
+                                        "value":{
+                                            "id" : "1",
+                                            "email" : "tono@123",
+                                            "name": "Tono"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/login" : {
+            "post" : {
+                "tags": ["Customer"],
+                "summary": "Login for customer",
+                "description": "Login and get JWT Token",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content" : {
+                        "application/json":{
+                            "schema":{
+                                "$ref" : "#/components/schemas/Login"
+                            },
+                            "examples": {
+                                "User1" : {
+                                    "description": "Example User1 login",
+                                    "value":{
+                                        "email" : "tono@gmail.com",
+                                        "password" : "tonobros"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "Success Login",
+                        "content": {
+                            "application/json" :{
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/LoginSuccess"
+                                },
+                                "examples":{
+                                    "User1" : {
+                                        "description": "Login Success",
+                                        "value":{
+                                            "id" : "1",
+                                            "email" : "tono@123",
+                                            "token" : "asdad53sdq&nw3dinr"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/{customer_id}": {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Customer"],
+                "summary": "Get detail customer by id",
+                "description": "Get detail user for customer profile",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "customer_id",
+                        "required": true,
+                        "description": "Id customer for get detail customer",
+                        "schema": {
+                            "type": "integer",
+                            "minLength": 1,
+                            "maxLength": 10
+                        },
+                        "examples": {
+                            "1": {
+                                "description": "sample customer id",
+                                "value": "1"
+                            },
+                            "2": {
+                                "description": "sample customer id",
+                                "value": "2"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get detail customer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DetailUserList"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Example success get detail customer",
+                                        "value":
+                                        {
+                                            "id": 1,
+                                            "email": "dewi@gmail.com",
+                                            "name": "Dewi",
+                                            "address": "Jl. QQQQ no 292, Bogor",
+                                            "gender": "F"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "tags": ["Customer"],
+                "summary": "Update detail customer",
+                "description": "Edit profile for customer",
+                "parameters": [
+                    
+                    {
+                        "in": "path",
+                        "name": "customer_id",
+                        "required": true,
+                        "description": "Id customer for update detail customer",
+                        "schema": {
+                            "type": "integer",
+                            "minLength": 1,
+                            "maxLength": 10
+                        },
+                        "examples": {
+                            "1": {
+                                "description": "sample customer id",
+                                "value": "1"
+                            },
+                            "2": {
+                                "description": "sample customer id",
+                                "value": "2"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content" : {
+                        "application/json":{
+                            "schema":{
+                                "$ref" : "#/components/schemas/Register"
+                            },
+                            "examples": {
+                                "User1" : {
+                                    "description": "Example User1 update detail",
+                                    "value":{
+                                        "email" : "tono@gmail.com",
+                                        "password" : "tonobros",
+                                        "name": "Tono",
+                                        "address" : "Jl Medan Merdeka",
+                                        "gender": "M"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "Success update customer",
+                        "content": {
+                            "application/json" :{
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/UpdateSuccess"
+                                },
+                                "examples":{
+                                    "User1" : {
+                                        "description": "Update Success",
+                                        "value":{
+                                            "id" : "1",
+                                            "email" : "tono@gmail.com",
+                                            "password" : "tonobros",
+                                            "name": "Tono",
+                                            "address" : "Jl Medan Merdeka",
+                                            "gender": "M"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/logout/{customer_id}": {
+            "put" : {
+                "tags": ["Customer"],
+                "summary": "Logout",
+                "description": "Logout for customer",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "customer_id",
+                        "required": true,
+                        "description": "Id customer for logout",
+                        "schema": {
+                            "type": "integer",
+                            "minLength": 1,
+                            "maxLength": 10
+                        },
+                        "examples": {
+                            "1": {
+                                "description": "sample customer id",
+                                "value": "1"
+                            },
+                            "2": {
+                                "description": "sample customer id",
+                                "value": "2"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200":{
+                        "description": "Success logout",
+                        "content": {
+                            "application/json" :{
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/UpdateSuccess"
+                                },
+                                "examples":{
+                                    "User1" : {
+                                        "description": "Logout Success",
+                                        "value":{
+                                            "id" : "1",
+                                            "email" : "tono@gmail.com",
+                                            "password" : "tonobros",
+                                            "name": "Tono",
+                                            "address" : "Jl Medan Merdeka",
+                                            "gender": "M"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/seller/register" : {
+            "post" : {
+                "tags": ["Seller"],
+                "summary": "Register for seller",
+                "description": "Create new seller",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content" : {
+                        "application/json":{
+                            "schema":{
+                                "$ref" : "#/components/schemas/RegisterSeller"
+                            },
+                            "examples": {
+                                "User1" : {
+                                    "description": "Example User1 register",
+                                    "value":{
+                                        "market_id": 2,
+                                        "category_id": 2,
+                                        "email" : "tono@gmail.com",
+                                        "password" : "tonobros",
+                                        "name": "Tono",
+                                        "address" : "Jl Medan Merdeka",
+                                        "gender": "M"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "Success Register",
+                        "content": {
+                            "application/json" :{
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/RegisterSuccess"
+                                },
+                                "examples":{
+                                    "User1" : {
+                                        "description": "Register Success",
+                                        "value":{
+                                            "id" : "1",
+                                            "email" : "tono@123",
+                                            "name": "Tono"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/seller/login" : {
+            "post" : {
+                "tags": ["Seller"],
+                "summary": "Login for seller",
+                "description": "Login and get JWT Token",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content" : {
+                        "application/json":{
+                            "schema":{
+                                "$ref" : "#/components/schemas/Login"
+                            },
+                            "examples": {
+                                "User1" : {
+                                    "description": "Example User1 login",
+                                    "value":{
+                                        "email" : "bambang@gmail.com",
+                                        "password" : "bam123"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "Success Login",
+                        "content": {
+                            "application/json" :{
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/LoginSuccess"
+                                },
+                                "examples":{
+                                    "User1" : {
+                                        "description": "Login Success",
+                                        "value":{
+                                            "id" : "5",
+                                            "email" : "bambang@gmail.com",
+                                            "token" : "yda567q0d&nw3dinr"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/seller/{seller_id}": {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Seller"],
+                "summary": "Get detail seller by id",
+                "description": "Get detail user for seller profile",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "seller_id",
+                        "required": true,
+                        "description": "Id seller for get detail seller",
+                        "schema": {
+                            "type": "integer",
+                            "minLength": 1,
+                            "maxLength": 10
+                        },
+                        "examples": {
+                            "1": {
+                                "description": "sample seller id",
+                                "value": "1"
+                            },
+                            "2": {
+                                "description": "sample seller id",
+                                "value": "2"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get detail seller",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DetailUserList"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Example success get detail seller",
+                                        "value":
+                                        {
+                                            "id": 1,
+                                            "email": "dewi@gmail.com",
+                                            "name": "Dewi",
+                                            "address": "Jl. QQQQ no 292, Bogor",
+                                            "gender": "F"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "tags": ["Seller"],
+                "summary": "Update detail seller",
+                "description": "Edit profile for seller",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content" : {
+                        "application/json":{
+                            "schema":{
+                                "$ref" : "#/components/schemas/Register"
+                            },
+                            "examples": {
+                                "User1" : {
+                                    "description": "Example User1 update detail",
+                                    "value":{
+                                        "email" : "tono@gmail.com",
+                                        "password" : "tonobros",
+                                        "name": "Tono",
+                                        "address" : "Jl Medan Merdeka",
+                                        "gender": "M"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "Success update seller",
+                        "content": {
+                            "application/json" :{
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/UpdateSuccess"
+                                },
+                                "examples":{
+                                    "User1" : {
+                                        "description": "Update Success",
+                                        "value":{
+                                            "id" : "1",
+                                            "email" : "tono@gmail.com",
+                                            "password" : "tonobros",
+                                            "name": "Tono",
+                                            "address" : "Jl Medan Merdeka",
+                                            "gender": "M"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/seller/orderlist": {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Seller"],
+                "summary": "Get all order list",
+                "description": "",
+                "parameters": [
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get all order list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArrayOrderList"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Example success get all order list",
+                                        "value": [
+                                            {
+                                                "driver_name": "Bambang",
+                                                "product_name": "Semangka",
+                                                "qty": 4,
+                                                "price": 40000
+                                            },
+                                            {
+                                                "driver_name": "Bambang",
+                                                "product_name": "Semangka",
+                                                "qty": 4,
+                                                "price": 40000
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/seller/orderlist/{order_id}": {
+            "put": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Seller"],
+                "summary": "Update status order",
+                "description": "",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "order_id",
+                        "required": true,
+                        "description": "Id order for update status order",
+                        "schema": {
+                            "type": "integer",
+                            "minLength": 1,
+                            "maxLength": 10
+                        },
+                        "examples": {
+                            "1": {
+                                "description": "sample order id",
+                                "value": "1"
+                            },
+                            "2": {
+                                "description": "sample order id",
+                                "value": "2"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success update status order",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UpdateStatusSuccess"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Example success update status order",
+                                        "value": 
+                                        {
+                                            "checkout_id": 1,
+                                            "product_id": 2,
+                                            "qty": 4,
+                                            "price": 40000,
+                                            "status": "completed"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/seller/logout/{seller_id}": {
+            "put" : {
+                "tags": ["Seller"],
+                "summary": "Logout",
+                "description": "Logout for seller",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "seller_id",
+                        "required": true,
+                        "description": "Id seller for logout",
+                        "schema": {
+                            "type": "integer",
+                            "minLength": 1,
+                            "maxLength": 10
+                        },
+                        "examples": {
+                            "1": {
+                                "description": "sample seller id",
+                                "value": "1"
+                            },
+                            "2": {
+                                "description": "sample seller id",
+                                "value": "2"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200":{
+                        "description": "Success logout",
+                        "content": {
+                            "application/json" :{
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/UpdateSuccess"
+                                },
+                                "examples":{
+                                    "User1" : {
+                                        "description": "Logout Success",
+                                        "value":{
+                                            "id" : "1",
+                                            "email" : "tono@gmail.com",
+                                            "password" : "tonobros",
+                                            "name": "Tono",
+                                            "address" : "Jl Medan Merdeka",
+                                            "gender": "M"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/driver/register" : {
+            "post" : {
+                "tags": ["Driver"],
+                "summary": "Register for driver",
+                "description": "Create new driver",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content" : {
+                        "application/json":{
+                            "schema":{
+                                "$ref" : "#/components/schemas/Register"
+                            },
+                            "examples": {
+                                "User1" : {
+                                    "description": "Example User1 register",
+                                    "value":{
+                                        "email" : "tono@gmail.com",
+                                        "password" : "tonobros",
+                                        "name": "Tono",
+                                        "address" : "Jl Medan Merdeka",
+                                        "gender": "M"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "Success Register",
+                        "content": {
+                            "application/json" :{
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/RegisterSuccess"
+                                },
+                                "examples":{
+                                    "User1" : {
+                                        "description": "Register Success",
+                                        "value":{
+                                            "id" : "1",
+                                            "email" : "tono@123",
+                                            "name": "Tono"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/driver/login" : {
+            "post" : {
+                "tags": ["Driver"],
+                "summary": "Login for driver",
+                "description": "Login and get JWT Token",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content" : {
+                        "application/json":{
+                            "schema":{
+                                "$ref" : "#/components/schemas/Login"
+                            },
+                            "examples": {
+                                "User1" : {
+                                    "description": "Example User1 login",
+                                    "value":{
+                                        "email" : "kiki@gmail.com",
+                                        "password" : "kiki822"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "Success Login",
+                        "content": {
+                            "application/json" :{
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/LoginSuccess"
+                                },
+                                "examples":{
+                                    "User1" : {
+                                        "description": "Login Success",
+                                        "value":{
+                                            "id" : "3",
+                                            "email" : "kiki@gmail.com",
+                                            "token" : "yda567q0d&nw3dinr"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/driver/{driver_id}": {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Driver"],
+                "summary": "Get detail driver by id",
+                "description": "Get detail driver for driver profile",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "driver_id",
+                        "required": true,
+                        "description": "Id driver for get detail driver",
+                        "schema": {
+                            "type": "integer",
+                            "minLength": 1,
+                            "maxLength": 10
+                        },
+                        "examples": {
+                            "1": {
+                                "description": "sample driver id",
+                                "value": "1"
+                            },
+                            "2": {
+                                "description": "sample driver id",
+                                "value": "2"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get detail driver",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DetailUserList"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Example success get detail driver",
+                                        "value":
+                                        {
+                                            "id": 1,
+                                            "email": "dewi@gmail.com",
+                                            "name": "Dewi",
+                                            "address": "Jl. QQQQ no 292, Bogor",
+                                            "gender": "F"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "tags": ["Driver"],
+                "summary": "Update detail driver",
+                "description": "Edit profile for driver",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content" : {
+                        "application/json":{
+                            "schema":{
+                                "$ref" : "#/components/schemas/Register"
+                            },
+                            "examples": {
+                                "User1" : {
+                                    "description": "Example User1 update detail",
+                                    "value":{
+                                        "email" : "tono@gmail.com",
+                                        "password" : "tonobros",
+                                        "name": "Tono",
+                                        "address" : "Jl Medan Merdeka",
+                                        "gender": "M"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "Success update driver",
+                        "content": {
+                            "application/json" :{
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/UpdateSuccess"
+                                },
+                                "examples":{
+                                    "User1" : {
+                                        "description": "Update Success",
+                                        "value":{
+                                            "id" : "1",
+                                            "email" : "tono@gmail.com",
+                                            "password" : "tonobros",
+                                            "name": "Tono",
+                                            "address" : "Jl Medan Merdeka",
+                                            "gender": "M"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/driver/orderlist": {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Driver"],
+                "summary": "Get a list of checkouts",
+                "description": "",
+                "parameters": [
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get checkouts with status searching",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "description": "Success get checkouts with status searching",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "total_qty": 2,
+                                                "total_price": 55000,
+                                                "customer_id": 1,
+                                                "payment_id": 1,
+                                                "status": "searching",
+                                                "delivery_price": 5000
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "failed get checkout",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "checkout_id : 0": {
+                                        "description": "Failed get checkout",
+                                        "value": {
+                                            "message": "checkout not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/driver/orderlist/{checkout_id}": {
+            "post": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Driver"],
+                "summary": "Taking an order(checkout)",
+                "description": "",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "checkout_id",
+                        "required": true,
+                        "description": "Id checkout to make a delivery",
+                        "schema": {
+                            "type": "integer",
+                            "minLength": 1,
+                            "maxLength": 10
+                        },
+                        "examples": {
+                            "Checkout 1": {
+                                "description": "sample checkout id for make delivery based on checkout id",
+                                "value": 1
+                            },
+                            "Checkout 2": {
+                                "description": "sample checkout id for make delivery based on checkout id",
+                                "value": 2
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success post make a delivery",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Checkout 1": {
+                                        "description": "Success make a delivery",
+                                        "value": [
+                                            {
+                                                "status": "progress",
+                                                "driver_id": 1,
+                                                "checkout_id": 1
+                                                
+                                            }
+                                        ]
+                                    },
+                                    "Checkout 2": {
+                                        "description": "Success make a delivery",
+                                        "value": [
+                                            {
+                                                "status": "progress",
+                                                "driver_id": 1,
+                                                "checkout_id": 2
+                                                
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "failed get checkout",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "checkout_id : 0": {
+                                        "description": "Failed get checkout",
+                                        "value": {
+                                            "message": "checkout not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Driver"],
+                "summary": "Marke delivery as finished",
+                "description": "",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "checkout_id",
+                        "required": true,
+                        "description": "Id checkout to finish a delivery",
+                        "schema": {
+                            "type": "integer",
+                            "minLength": 1,
+                            "maxLength": 10
+                        },
+                        "examples": {
+                            "Checkout 1": {
+                                "description": "sample checkout id for finish delivery based on checkout id",
+                                "value": 1
+                            },
+                            "Checkout 2": {
+                                "description": "sample checkout id for finish delivery based on checkout id",
+                                "value": 2
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success finish a delivery",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Checkout 1": {
+                                        "description": "Success finish a delivery",
+                                        "value": [
+                                            {
+                                                "status": "completed",
+                                                "driver_id": 1,
+                                                "checkout_id": 1
+                                                
+                                            }
+                                        ]
+                                    },
+                                    "Checkout 2": {
+                                        "description": "Success finish a delivery",
+                                        "value": [
+                                            {
+                                                "status": "completed",
+                                                "driver_id": 1,
+                                                "checkout_id": 2
+                                                
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "failed put delivery",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "checkout_id : 3": {
+                                        "description": "Failed put delivery",
+                                        "value": {
+                                            "message": "delivery with checkout_id 3 not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/driver/logout/{driver_id}": {
+            "put" : {
+                "tags": ["Driver"],
+                "summary": "Logout",
+                "description": "Logout for driver",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "driver_id",
+                        "required": true,
+                        "description": "Id driver for logout",
+                        "schema": {
+                            "type": "integer",
+                            "minLength": 1,
+                            "maxLength": 10
+                        },
+                        "examples": {
+                            "1": {
+                                "description": "sample driver id",
+                                "value": "1"
+                            },
+                            "2": {
+                                "description": "sample driver id",
+                                "value": "2"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200":{
+                        "description": "Success logout",
+                        "content": {
+                            "application/json" :{
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/UpdateSuccess"
+                                },
+                                "examples":{
+                                    "User1" : {
+                                        "description": "Logout Success",
+                                        "value":{
+                                            "id" : "1",
+                                            "email" : "tono@gmail.com",
+                                            "password" : "tonobros",
+                                            "name": "Tono",
+                                            "address" : "Jl Medan Merdeka",
+                                            "gender": "M"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/cart/{id_cart}": {
             "get": {
                 "security": [
@@ -162,7 +1736,6 @@
                                         "description": "Example success get all products in a cart",
                                         "value": [
                                             {
-                                                "message": "success get all products by cart id",
                                                 "cart": {
                                                     "id": 2,
                                                     "customer_id": 3,
@@ -214,94 +1787,18 @@
                                                         ]
                                                     }
                                                 ]
->>>>>>> a143a41c15e7535e8d5127735a20c9085c7b12e8
                                             }
                                         ]
                                     }
                                 }
                             }
                         }
-<<<<<<< HEAD
-                    },
-                    "404": {
-                        "description": "Market not Found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "message": {
-                                            "type": "string"
-                                        }
-                                    }
-                                },
-                                "examples": {
-                                    "pasar wadidaw": {
-                                        "description": "Failed to get list market",
-                                        "value": {
-                                            "message": "Market not found"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-=======
                         
                         
->>>>>>> a143a41c15e7535e8d5127735a20c9085c7b12e8
                     }
                 }
             }
         },
-<<<<<<< HEAD
-        "/markets/{market_id}" :{
-            "get" : {
-                "tags" : ["Market"],
-                "summary": "Get list category or seller",
-                "description": "Get list category or seller inside a market by certain id",
-                "parameters": [
-                    {
-                        "$ref" : "#/components/parameters/MarketId"
-                    }
-                ],
-                "requestBody":{
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema":{},
-                            "examples":{
-                                "Market a" : {
-                                    "description": "Example get list category or seller from market a",
-                                    "value":{
-                                        "Id" : "1"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200" : {
-                        "description": "success",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "examples": {
-                                    "Market a": {
-                                        "description": "Success get list category or seller by id of market",
-                                        "value": [
-                                            {
-                                                "id": 1,
-                                                "name": "Toko mas Ujang",
-                                                "category" : "sayur-sayuran"
-                                            },
-                                            {
-                                                "id": 2,
-                                                "name": "Toko mas Bayu",
-                                                "category" : "daging"
-                                            }
-                                        ]
-=======
         "/cart/{id_cart}/{id_product}": {
             "delete": {
                 "security": [
@@ -369,25 +1866,19 @@
                                     "success": {
                                         "description": "Success delete chosen product from a cart",
                                         "value": {
-                                            "message": "Success delete chosen product from a cart",
                                             "id": 5,
                                             "name": "Tomat",
                                             "price": 5000,
                                             "quantity": 1,
                                             "description": "Tomat"
                                         }
->>>>>>> a143a41c15e7535e8d5127735a20c9085c7b12e8
                                     }
                                 }
                             }
                         }
                     },
                     "404": {
-<<<<<<< HEAD
-                        "description": "Market not Found",
-=======
                         "description": "Product not found",
->>>>>>> a143a41c15e7535e8d5127735a20c9085c7b12e8
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -399,17 +1890,10 @@
                                     }
                                 },
                                 "examples": {
-<<<<<<< HEAD
-                                    "id : 999": {
-                                        "description": "Failed to get list category or seller from market",
-                                        "value": {
-                                            "message": "Market not found"
-=======
                                     "failed": {
                                         "description": "Failed delete chosen product from a cart",
                                         "value": {
                                             "message": "Product not found"
->>>>>>> a143a41c15e7535e8d5127735a20c9085c7b12e8
                                         }
                                     }
                                 }
@@ -419,74 +1903,7 @@
                 }
             }
         },
-<<<<<<< HEAD
-        "/markets/{market_id}/{category}" :{
-            "get" : {
-                "tags" : ["Market"],
-                "summary": "Get list category or seller",
-                "description": "et list category or seller by string",
-                "parameters": [
-                    {
-                        "$ref" : "#/components/parameters/CategoryList"
-                    }
-                ],
-                "requestBody":{
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema":{},
-                            "examples":{
-                                "sayur" : {
-                                    "description": "Example get category name",
-                                    "value":{
-                                        "search" : "sayur"
-                                    }
-                                },
-                                "daging" : {
-                                    "description": "Example get category name",
-                                    "value":{
-                                        "search" : "daging"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200" : {
-                        "description": "success",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "examples": {
-                                    "sayur": {
-                                        "description": "Success get list category or seller by string",
-                                        "value": [
-                                            {
-                                                "id": 1,
-                                                "name": "Toko mas Ujang",
-                                                "category" : "sayur-sayuran"
-                                            }
-                                        ]
-                                    },
-                                    "daging": {
-                                        "description": "Success get market by string",
-                                        "value": [
-                                            {
-                                                "id": 2,
-                                                "name": "Toko mas Bayu",
-                                                "category" : "daging"
-                                            }
-                                        ]
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "category not Found",
-=======
-        "/payment/{id_payment}": {
+        "/payments": {
             "get": {
                 "security": [
                     {
@@ -494,72 +1911,34 @@
                     }
                 ],
                 "tags": ["Payment Method"],
-                "summary": "Get payment method by id",
-                "description": "Choosing payment Method",
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id_payment",
-                        "required": true,
-                        "description": "Id payment for choosing payment Method",
-                        "schema": {
-                            "type": "integer",
-                            "minLength": 1,
-                            "maxLength": 10
-                        },
-                        "examples": {
-                            "1": {
-                                "description": "sample payment id",
-                                "value": "Transfer BCA"
-                            },
-                            "2": {
-                                "description": "sample payment id",
-                                "value": "COD"
-                            }
-                        }
-                    }
-                ],
+                "summary": "Get all payment method",
+                "description": "Get all payment method for payment",
+                "parameters": [],
                 "responses": {
                     "200": {
-                        "description": "Success get payment method by id",
->>>>>>> a143a41c15e7535e8d5127735a20c9085c7b12e8
+                        "description": "Success get all payment method",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "object",
                                     "properties": {
-                                        "message": {
-                                            "type": "string"
-<<<<<<< HEAD
-=======
-                                        },
                                         "id": {
                                             "type": "integer"
                                         },
                                         "name": {
                                             "type": "string"
->>>>>>> a143a41c15e7535e8d5127735a20c9085c7b12e8
                                         }
                                     }
                                 },
                                 "examples": {
-<<<<<<< HEAD
-                                    "makanan kucing": {
-                                        "description": "failed to get list of category or seller",
-                                        "value": {
-                                            "message": "category or seller not found"
-                                        }
-=======
                                     "success": {
-                                        "description": "Example success get payment method by id",
+                                        "description": "Example success get payment method",
                                         "value": [
                                             {
-                                                "message": "success get payment method by id",
                                                 "id": 2,
                                                 "name": "COD"
                                             }
                                         ]
->>>>>>> a143a41c15e7535e8d5127735a20c9085c7b12e8
                                     }
                                 }
                             }
@@ -568,104 +1947,143 @@
                 }
             }
         },
-<<<<<<< HEAD
-        "/user/{userId}" : {
-            "post" : {
-                "tags": ["Users"],
-                "summary": "To Login",
-                "description": "Login and get JWT Token",
-                "parameters": [
-                    {
-                        "$ref" : "#/components/parameters/UserId"
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content" : {
-                        "application/json":{
-                            "schema":{
-                                "$ref" : "#/components/schemas/Login"
-                            },
-                            "examples": {
-                                "Tono" : {
-                                    "description": "Example User tono login",
-                                    "value":{
-                                        "email/username" : "tono@123",
-                                        "password" : "tonobros"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200":{
-                        "description": "Success Login",
-                        "content": {
-                            "application/json" :{
-                                "schema" : {
-                                    "$ref" : "#/components/schemas/LoginSuccess"
-                                },
-                                "examples":{
-                                    "Tono" : {
-                                        "description": "Login Success",
-                                        "value":{
-                                            "email/username" : "tono@123",
-                                            "token" : "asdasdqnwdin"
-=======
-        "/user/{id_user}": {
+        "/cart/inprogress": {
             "get": {
                 "security": [
                     {
                         "JWTAuth": []
                     }
                 ],
-                "tags": ["User"],
-                "summary": "Get detail user by id",
-                "description": "Get detail user for user profile",
+                "tags": ["Cart"],
+                "summary": "Get list of all inprogress carts",
+                "description": "",
                 "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id_user",
-                        "required": true,
-                        "description": "Id user for get detail user",
-                        "schema": {
-                            "type": "integer",
-                            "minLength": 1,
-                            "maxLength": 10
-                        },
-                        "examples": {
-                            "1": {
-                                "description": "sample user id",
-                                "value": "1"
-                            },
-                            "2": {
-                                "description": "sample user id",
-                                "value": "2"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get all inprogress carts",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArrayCompleteCartList"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Example success get all inprogress carts",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "id_shop": "11",
+                                                "id_product": "21"
+                                            } 
+                                        ]
+                                    }
+                                }
                             }
                         }
+                    }
+                }
+            }
+        },
+        "/cart/complete": {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Cart"],
+                "summary": "Get list of all complete carts",
+                "description": "",
+                "parameters": [
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get all complete carts",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArrayCompleteCartList"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Example success get all complete carts",
+                                        "value": [
+                                            {
+                                                "id": 2,
+                                                "id_shop": "12",
+                                                "id_product": "22"
+                                            }, 
+                                            {
+                                                "id": 3,
+                                                "id_shop": "13",
+                                                "id_product": "23"
+                                            } 
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }, 
+        "/cart/{cartbyId}": {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Cart"],
+                "summary": "Get a cart by spesific Id",
+                "description": "",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/CartId"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Success get detail user",
+                        "description": "Success get cart by Id",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/DetailUserList"
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        }
+                                    }
                                 },
                                 "examples": {
                                     "success": {
-                                        "description": "Example success get detail user",
-                                        "value":
-                                        {
-                                            "message": "Success get detail user",
-                                            "id": 1,
-                                            "email": "dewi@gmail.com",
-                                            "name": "Dewi",
-                                            "address": "Jl. QQQQ no 292, Bogor",
-                                            "gender": "F"
->>>>>>> a143a41c15e7535e8d5127735a20c9085c7b12e8
+                                        "description": "Success get cart by Id",
+                                        "value": {
+                                            "success": true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Failed get not found cart",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "failed": {
+                                        "description": "Failed get cart",
+                                        "value": {
+                                            "success": false
                                         }
                                     }
                                 }
@@ -674,13 +2092,996 @@
                     }
                 }
             }
-<<<<<<< HEAD
-        }       
-=======
+        },
+        "/markets/{market_id}/shop/{shop_id}": {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Market"],
+                "summary": "Get all products in selected shop",
+                "description": "",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ShopId"
+                    }
+                ],
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {},
+                            "examples":{
+                                "Market a": {
+                                    "description": "Example get all products from selected shop",
+                                    "value": {
+                                        "Id": "1",
+                                        "shopId": "2"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success get product by shop id",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "Toko Jajang": {
+                                        "description": "Success get all product in specific shop",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "name": "Toko Jajang",
+                                                "product": [
+                                                    {
+                                                        "$ref" : "#/components/schemas/arrayProductShop"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Toko Udin": {
+                                        "description": "Success get all product in specific shop",
+                                        "value": [
+                                            {
+                                                "id": 2,
+                                                "name": "Toko Udin",
+                                                "product": [
+                                                    {
+                                                        "$ref" : "#/components/schemas/arrayProductShop"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Shop not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "failed": {
+                                        "description": "failed to get list of product",
+                                        "value": {
+                                            "message": "seller not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/markets/{market_id}/{shop_id}/{product_id}" : {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Market"],
+                "summary": "Get specific product in selected shop",
+                "description": "",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ShopId"
+                    }
+                ],
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {},
+                            "examples":{
+                                "Market a": {
+                                    "description": "Example get specific products from selected shop",
+                                    "value": {
+                                        "Id": "1",
+                                        "shop_id": "2",
+                                        "product_id": "1"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success get a specific product from shop id",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "Toko Jajang": {
+                                        "description": "Success get a product in specific shop",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "name": "Toko Jajang",
+                                                "product": [
+                                                    {
+                                                        "$ref" : "#/components/schemas/ProductShop"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "Toko Udin": {
+                                        "description": "Success get all product in specific shop",
+                                        "value": [
+                                            {
+                                                "id": 2,
+                                                "name": "Toko Udin",
+                                                "product": [
+                                                    {
+                                                        "$ref" : "#/components/schemas/ProductShop"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Shop or product not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "1": {
+                                        "description": "failed to get specific product",
+                                        "value": {
+                                            "message": "product not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/products": {
+            "get": {
+                "tags": ["Product"],
+                "summary": "Get all products in selected shop",
+                "description": "",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ShopId"
+                    }
+                ],
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {},
+                            "examples":{
+                                "Market a": {
+                                    "description": "Example get all products from selected shop",
+                                    "value": {
+                                        "Id": "1",
+                                        "shopId": "2"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success get product by shop id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref" : "#/components/schemas/arrayProductShop"
+                                },
+                                "examples": {
+                                    "Toko Jajang": {
+                                        "description": "Success get all product in specific shop",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "category": "Sayur",
+                                                "name": "tomat",
+                                                "price": 2000,
+                                                "quantity": 50,
+                                                "description": "ini merupakan tomat"
+                                            },
+                                            {
+                                                "id": 2,
+                                                "category": "sayur",
+                                                "name": "sawi",
+                                                "price": 2500,
+                                                "quantity": 40,
+                                                "description": "ini merupakan sawi"
+                                            }
+                                        ]
+                                    },
+                                    "Toko Udin": {
+                                        "description": "Success get all product in specific shop",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "category": "Buah",
+                                                "name": "apel",
+                                                "price": 10000,
+                                                "quantity": 30,
+                                                "description": "ini merupakan apel"
+                                            },
+                                            {
+                                                "id": 2,
+                                                "category": "buah",
+                                                "name": "jeruk",
+                                                "price": 8000,
+                                                "quantity": 40,
+                                                "description": "ini merupakan apel"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Seller not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "failed": {
+                                        "description": "failed to get list of product",
+                                        "value": {
+                                            "message": "seller not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/seller/{seller_id}/product" : {
+            "get": {
+                "tags": ["Product"],
+                "summary": "Get specific product in selected shop",
+                "description": "",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ShopId"
+                    }
+                ],
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {},
+                            "examples":{
+                                "Toko Sehat Sejahtera": {
+                                    "description": "Example get specific products from selected shop",
+                                    "value": {
+                                        "seller_id": "1",
+                                        "product_name": "Kunyit"
+                                    }
+                                },
+                                "Toko Udin": {
+                                    "description": "Example get specific products from selected shop",
+                                    "value": {
+                                        "seller_id": "2",
+                                        "product_name": "Teh"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success get a specific product from shop id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref" : "#/components/schemas/ProductShop"
+                                },
+                                "examples": {
+                                    "Toko Sehat Sejahtera": {
+                                        "description": "Success get a product in specific shop",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "category": "Jamu",
+                                                "name": "Kunyit telur",
+                                                "price": 4000,
+                                                "quantity": 40,
+                                                "description": "ini merupakan jahe kunyit telur"
+                                            }
+                                        ]
+                                    },
+                                    "Toko Udin": {
+                                        "description": "Success get all product in specific shop",
+                                        "value": [
+                                            {
+                                                "id": 2,
+                                                "category": "Teh",
+                                                "name": "Teh hijau",
+                                                "price": 4000,
+                                                "quantity": 20,
+                                                "description": "ini merupakan teh hijau"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Shop or product not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "1": {
+                                        "description": "failed to get specific product",
+                                        "value": {
+                                            "message": "product not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/seller/{seller_id}/product/{product_id}" : {
+            "get": {
+                "tags": ["Product"],
+                "summary": "Get specific product in selected shop",
+                "description": "",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ShopId"
+                    }
+                ],
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {},
+                            "examples":{
+                                "Toko Sehat Sejahtera": {
+                                    "description": "Example get specific products from selected shop",
+                                    "value": {
+                                        "seller_id": "1",
+                                        "product_id": "1"
+                                    }
+                                },
+                                "Toko Udin": {
+                                    "description": "Example get specific products from selected shop",
+                                    "value": {
+                                        "seller_id": "2",
+                                        "product_id": "2"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success get a specific product from shop id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref" : "#/components/schemas/ProductShop"
+                                },
+                                "examples": {
+                                    "Toko Sehat Sejahtera": {
+                                        "description": "Success get a product in specific shop",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "category": "Jamu",
+                                                "name": "Kunyit telur",
+                                                "price": 4000,
+                                                "quantity": 40,
+                                                "description": "ini merupakan jahe kunyit telur"
+                                            }
+                                        ]
+                                    },
+                                    "Toko Udin": {
+                                        "description": "Success get all product in specific shop",
+                                        "value": [
+                                            {
+                                                "id": 2,
+                                                "category": "Teh",
+                                                "name": "Teh hijau",
+                                                "price": 4000,
+                                                "quantity": 20,
+                                                "description": "ini merupakan teh hijau"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Shop or product not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "1": {
+                                        "description": "failed to get specific product",
+                                        "value": {
+                                            "message": "product not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/history" : {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth":[]
+                    }
+                ],
+                "tags": ["History"],
+                "summary": "Get checkout status in progress",
+                "description": "",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/History"
+                    }
+                ],
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {},
+                            "examples":{
+                                "Checkout in progress": {
+                                    "description": "Example get checkout by status in progress",
+                                    "value": {
+                                        "status": "progress"
+                                    }
+                                },
+                                "Checkout completed": {
+                                    "description": "Example get checkout by status completed",
+                                    "value": {
+                                        "status": "completed"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success get a specific checkout status",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref" : "#/components/schemas/Checkout"
+                                },
+                                "examples": {
+                                    "Checkout status in progress": {
+                                        "description": "Success get checkout for a specific status",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "totalQty": 3,
+                                                "totalPrice": 20000,
+                                                "customerId": 2,
+                                                "paymentId": 1,
+                                                "status": "progress"
+                                            },
+                                            {
+                                                "id": 2,
+                                                "totalQty": 3,
+                                                "totalPrice": 30000,
+                                                "customerId": 1,
+                                                "paymentId": 1,
+                                                "status": "progress"
+                                            },
+                                            {
+                                                "id": 3,
+                                                "totalQty": 4,
+                                                "totalPrice": 22000,
+                                                "customerId": 3,
+                                                "paymentId": 1,
+                                                "status": "progress"
+                                            }
+                                        ]
+                                    },
+                                    "Checkout status completed": {
+                                        "description": "Success get checkout for a specific status",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "totalQty": 3,
+                                                "totalPrice": 20000,
+                                                "customerId": 2,
+                                                "paymentId": 1,
+                                                "status": "completed"
+                                            },
+                                            {
+                                                "id": 2,
+                                                "totalQty": 3,
+                                                "totalPrice": 30000,
+                                                "customerId": 1,
+                                                "paymentId": 1,
+                                                "status": "completed"
+                                            },
+                                            {
+                                                "id": 3,
+                                                "totalQty": 4,
+                                                "totalPrice": 22000,
+                                                "customerId": 3,
+                                                "paymentId": 1,
+                                                "status": "completed"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Shop or product not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "1": {
+                                        "description": "failed to get specific product",
+                                        "value": {
+                                            "message": "product not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/seller/products" : {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth":[]
+                    }
+                ],
+                "tags": ["Seller"],
+                "summary": "Get seller products",
+                "description": "",
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {},
+                            "examples":{
+                                "Seller 1": {
+                                    "description": "Example get products from my shop",
+                                    "value": {
+                                        "token": "extract token and get seller_id"
+                                    }
+                                },
+                                "Seller 2": {
+                                    "description": "Example get products from my shop",
+                                    "value": {
+                                        "token": "extract token and get seller_id"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success get a specific seller product",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref" : "#/components/schemas/Product"
+                                },
+                                "examples": {
+                                    "Seller 1": {
+                                        "description": "Success get your products",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "name": "tomat",
+                                                "price": 2000,
+                                                "stock": 50,
+                                                "description": "ini tomat",
+                                                "sellerId": 1
+                                            },
+                                            {
+                                                "id": 2,
+                                                "name": "sawi",
+                                                "price": 3000,
+                                                "stock": 50,
+                                                "description": "ini sawi",
+                                                "sellerId": 1
+                                            },
+                                            {
+                                                "id": 3,
+                                                "name": "tomat hijau",
+                                                "price": 2100,
+                                                "stock": 50,
+                                                "description": "ini tomat hijau",
+                                                "sellerId": 1
+                                            }
+                                        ]
+                                    },
+                                    "Seller 2": {
+                                        "description": "Success get your products",
+                                        "value": [
+                                            {
+                                                "id": 4,
+                                                "name": "jamu kunyit",
+                                                "price": 8000,
+                                                "stock": 50,
+                                                "description": "ini jamu kunyit",
+                                                "sellerId": 2
+                                            },
+                                            {
+                                                "id": 5,
+                                                "name": "jamu kuat",
+                                                "price": 10000,
+                                                "stock": 50,
+                                                "description": "ini jamu kuat",
+                                                "sellerId": 2
+                                            },
+                                            {
+                                                "id": 6,
+                                                "name": "jamu ginseng",
+                                                "price": 21000,
+                                                "stock": 20,
+                                                "description": "ini jamu ginseng",
+                                                "sellerId": 2
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Shop or product not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "1": {
+                                        "description": "failed to get specific product",
+                                        "value": {
+                                            "message": "product not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "JWTAuth":[]
+                    }
+                ],
+                "tags": ["Seller"],
+                "summary": "Add seller products",
+                "description": "",
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {},
+                            "examples":{
+                                "Seller 1": {
+                                    "description": "Example add products from my shop",
+                                    "value": {
+                                        "name": "tomat",
+                                        "price": 2000,
+                                        "stock": 50,
+                                        "description": "ini tomat",
+                                        "sellerId": 1
+                                    }
+                                },
+                                "Seller 2": {
+                                    "description": "Example add products from my shop",
+                                    "value": {
+                                        "id": 4,
+                                        "name": "jamu kunyit",
+                                        "price": 8000,
+                                        "stock": 50,
+                                        "description": "ini jamu kunyit",
+                                        "sellerId": 2
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success add a specific seller product",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref" : "#/components/schemas/Product"
+                                },
+                                "examples": {
+                                    "Seller 1": {
+                                        "description": "Success add your products",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "name": "tomat",
+                                                "price": 2000,
+                                                "stock": 50,
+                                                "description": "ini tomat",
+                                                "sellerId": 1
+                                            }
+                                        ]
+                                    },
+                                    "Seller 2": {
+                                        "description": "Success add your products",
+                                        "value": [
+                                            {
+                                                "id": 4,
+                                                "name": "jamu kunyit",
+                                                "price": 8000,
+                                                "stock": 50,
+                                                "description": "ini jamu kunyit",
+                                                "sellerId": 2
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Product cannot be added",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "1": {
+                                        "description": "failed to add specific product",
+                                        "value": {
+                                            "message": "product not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/seller/products/{product_id};" : {
+            "put": {
+                "security": [
+                    {
+                        "JWTAuth":[]
+                    }
+                ],
+                "tags": ["Seller"],
+                "summary": "Edit seller products",
+                "description": "",
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {},
+                            "examples":{
+                                "Seller 1": {
+                                    "description": "Example add products from my shop",
+                                    "value": {
+                                        "name": "tomat",
+                                        "price": 2000,
+                                        "stock": 50,
+                                        "description": "ini tomat",
+                                        "sellerId": 1
+                                    }
+                                },
+                                "Seller 2": {
+                                    "description": "Example add products from my shop",
+                                    "value": {
+                                        "id": 4,
+                                        "name": "jamu kunyit",
+                                        "price": 8000,
+                                        "stock": 50,
+                                        "description": "ini jamu kunyit",
+                                        "sellerId": 2
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success add a specific seller product",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref" : "#/components/schemas/Product"
+                                },
+                                "examples": {
+                                    "Seller 1": {
+                                        "description": "Success edit your products",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "name": "tomat",
+                                                "price": 2000,
+                                                "stock": 50,
+                                                "description": "ini tomat",
+                                                "sellerId": 1
+                                            }
+                                        ]
+                                    },
+                                    "Seller 2": {
+                                        "description": "Success edit your products",
+                                        "value": [
+                                            {
+                                                "id": 4,
+                                                "name": "jamu kunyit",
+                                                "price": 8000,
+                                                "stock": 50,
+                                                "description": "ini jamu kunyit",
+                                                "sellerId": 2
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Product cannot be edited",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "1": {
+                                        "description": "failed to edit specific product",
+                                        "value": {
+                                            "message": "product not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
->>>>>>> a143a41c15e7535e8d5127735a20c9085c7b12e8
     },
     "components": {
+        "securitySchemes": {
+            "JWTAuth": {            
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            },
+            "TodolistAuth": {
+                "description": "Authentication for Todolist RESTful API",
+                "type": "apiKey",
+                "in": "header",
+                "name": "X-API-Key"
+            }
+        },
         "parameters" : {
             "UserId" : {
                 "name" : "UserId",
@@ -745,9 +3146,177 @@
                         "value" : "1"
                     }
                 }
+            },
+            "ShopId": {
+                "name": "shopId",
+                "in": "path",
+                "required": true,
+                "description": "Cart id for get shop details",
+                "schema": {
+                    "type": "object" 
+                },
+                "examples": {
+                    "java": {
+                        "description": "sample todo list id for java",
+                        "value": 1
+                    },
+                    "php": {
+                        "description": "sample todo list id for php",
+                        "value": 2
+                    }
+                }
+            },
+            "CartId": {
+                "name": "cartId",
+                "in": "path",
+                "required": true,
+                "description": "Cart id for get",
+                "schema": {
+                    "type": "object" 
+                },
+                "examples": {
+                    "java": {
+                        "description": "sample todo list id for java",
+                        "value": 1
+                    },
+                    "php": {
+                        "description": "sample todo list id for php",
+                        "value": 2
+                    }
+                }
+            },
+            "History": {
+                "name": "HistoryId",
+                "in": "path",
+                "required": true,
+                "description": "History list",
+                "schema": {
+                    "type": "object"
+                },
+                "examples": {
+                    "java": {
+                        "description": "sample todo list id for java",
+                        "value": 1
+                    },
+                    "php": {
+                        "description": "sample todo list id for php",
+                        "value": 2
+                    }
+                }
             }
         },
         "schemas": {
+            "Register": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "address": {
+                        "type": "string"
+                    },
+                    "gender": {
+                        "type": "string"
+                    }
+                }
+            },
+            "RegisterSuccess" : {
+                "type": "object",
+                "properties": {
+                    "id" : {
+                        "type": "integer"
+                    },
+                    "email" : {
+                        "type": "string"
+                    },
+                    "name" : {
+                        "type": "string"
+                    }
+                }
+            },
+            "RegisterSeller": {
+                "type": "object",
+                "properties": {
+                    "market_id": {
+                        "type": "integer"
+                    },
+                    "category_id": {
+                        "type": "integer"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "address": {
+                        "type": "string"
+                    },
+                    "gender": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Login": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                }
+            },
+            "LoginSuccess" : {
+                "type": "object",
+                "properties": {
+                    "id" : {
+                        "type": "integer"
+                    },
+                    "email" : {
+                        "type": "string"
+                    },
+                    "name" : {
+                        "type": "string"
+                    },
+                    "Token" : {
+                        "type": "string"
+                    }
+                }
+            },
+            "UpdateSuccess" : {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "address": {
+                        "type": "string"
+                    },
+                    "gender": {
+                        "type": "string"
+                    }
+                }
+            },
             "MarketList": {
                 "type": "object",
                 "properties": {
@@ -762,36 +3331,72 @@
                     }
                 }
             },
+            "ArrayCategoryList": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/CategoryList"
+                }
+            },
+            "CategoryList": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ArrayOrderList": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/OrderList"
+                }
+            },
+            "OrderList": {
+                "type": "object",
+                "properties": {
+                    "driver_name": {
+                        "type": "string"
+                    },
+                    "product_name": {
+                        "type": "string"
+                    },
+                    "qty": {
+                        "type": "integer"
+                    },
+                    "price": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "UpdateStatusSuccess": {
+                "type": "object",
+                "properties": {
+                    "checkout_id": {
+                        "type": "integer"
+                    },
+                    "product_id": {
+                        "type": "integer"
+                    },
+                    "qty": {
+                        "type": "integer"
+                    },
+                    "price": {
+                        "type": "integer"
+                    },
+                    "status": {
+                        "type": "string"
+                    }
+                }
+            },
             "ArrayMarketList": {
                 "type": "array",
                 "items": {
                     "$ref": "#/components/schemas/MarketList"
                 }
             },
-<<<<<<< HEAD
-            "Login": {
-                "type": "object",
-                "properties": {
-                    "email/username": {
-                        "type": "string"
-                    },
-                    "password": {
-                        "type": "number",
-                        "format": "int32"
-                    }
-                }
-            },
-            "LoginSuccess" : {
-                "type": "object",
-                "properties": {
-                    "email/username" : {
-                        "type": "string"
-                    },
-                    "Token" : {
-                        "type": "string"
-                    }
-                }
-=======
             "ProductsInCartList": {
                 "type": "object",
                 "properties": {
@@ -872,9 +3477,6 @@
             "DetailUserList": {
                 "type": "object",
                 "properties": {
-                    "message": {
-                        "type": "string"
-                    },
                     "id": {
                         "type": "integer"
                     },
@@ -895,9 +3497,6 @@
             "DeletedProductList": {
                 "type": "object",
                 "properties": {
-                    "message": {
-                        "type": "string"
-                    },
                     "id": {
                         "type": "integer"
                     },
@@ -914,9 +3513,145 @@
                         "type": "string"
                     }
                 } 
->>>>>>> a143a41c15e7535e8d5127735a20c9085c7b12e8
+            },
+            "InprogressCartList": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "id_shop": {
+                        "type": "integer"
+                    },
+                    "id_product": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "ArrayInprogressCartList": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/InprogressCartList"
+                }
+            },
+            "CompleteCartList": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "id_shop": {
+                        "type": "integer"
+                    },
+                    "id_product": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "ProductShop": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "category": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "integer"
+                    },
+                    "quantity": {
+                        "type": "integer"
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                }
+            },
+            "arrayProductShop":{
+                "type": "array",
+                "items":{
+                    "$ref": "#/components/schemas/ProductShop"
+                }
+            },
+            "ArrayCompleteCartList": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/CompleteCartList"
+                }
+            },
+            "Order": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "qty":{
+                        "type": "integer"
+                    },
+                    "price": {
+                        "type": "integer"
+                    },
+                    "checkout_id":{
+                        "type": "integer"
+                    },
+                    "product_id": {
+                        "type": "integer"
+                    },
+                    "status": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Checkout":{
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "totalQty":{
+                        "type": "integer"
+                    },
+                    "totalPrice":{
+                        "type": "integer"
+                    },
+                    "customerId": {
+                        "type": "integer"
+                    },
+                    "paymentId": {
+                        "type": "integer"
+                    },
+                    "status":{
+                        "type": "string"
+                    }
+                }
+            },
+            "Product": {
+                "type": "object",
+                "properties": {
+                    "id":{
+                        "type": "integer"
+                    },
+                    "name":{
+                        "type": "string"
+                    },
+                    "Price":{
+                        "type": "integer"
+                    },
+                    "stock":{
+                        "type": "integer"
+                    },
+                    "Description":{
+                        "type": "string"
+                    },
+                    "sellerId":{
+                        "type": "integer"
+                    }
+                }
             }
         }
     }
 } 
- 
