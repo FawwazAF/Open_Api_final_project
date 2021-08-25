@@ -31,11 +31,6 @@
     "paths": {
         "/markets": {
             "get": {
-                "security": [
-                    {
-                        "JWTAuth": []
-                    }
-                ],
                 "tags": ["Market"],
                 "summary": "Get all list of markets",
                 "description": "",
@@ -168,11 +163,138 @@
                 }
             }
         },
-        "/markets/{market_id}/category" :{
+        "/checkout": {
+            "post": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Checkout"],
+                "summary": "Make a checkout after filling the cart",
+                "description": "",
+                "parameters": [
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success make a checkout",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArrayMarketList"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Success make a checkout",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "total_qty": 2,
+                                                "total_price": 55000,
+                                                "customer_id": 1,
+                                                "payment_id": 1,
+                                                "status": "searching",
+                                                "delivery_price": 5000
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "cart is empty",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "cart is empty": {
+                                        "description": "Failed to make Checkout",
+                                        "value": {
+                                            "message": "cart is empty"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/checkout/{checkout_id}": {
+            "put": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Checkout"],
+                "summary": "Finish the transaction",
+                "description": "",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "checkout_id",
+                        "required": true,
+                        "description": "Id checkout to edit checkout",
+                        "schema": {
+                            "type": "integer",
+                            "minLength": 1,
+                            "maxLength": 10
+                        },
+                        "examples": {
+                            "Checkout 1": {
+                                "description": "sample checkout id to finish a checkout",
+                                "value": 1
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success edit a checkout",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "description": "Success edit a checkout",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "total_qty": 2,
+                                                "total_price": 55000,
+                                                "customer_id": 1,
+                                                "payment_id": 1,
+                                                "status": "completed"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "failed edit checkout",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "checkout_id : 0": {
+                                        "description": "Failed to edit checkout",
+                                        "value": {
+                                            "message": "checkout not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/markets/{market_id}/seller" :{
             "get" : {
                 "tags" : ["Market"],
-                "summary": "Get list category or seller",
-                "description": "Get list category or seller inside a market by certain id",
+                "summary": "Get list of seller inside a market",
+                "description": "Get list of seller inside a market",
                 "parameters": [
                     {
                         "$ref" : "#/components/parameters/MarketId"
@@ -185,7 +307,7 @@
                             "schema":{},
                             "examples":{
                                 "Market a" : {
-                                    "description": "Example get list category or seller from market a",
+                                    "description": "Example get list of seller from market a",
                                     "value":{
                                         "Id" : "1"
                                     }
@@ -207,12 +329,14 @@
                                             {
                                                 "id": 1,
                                                 "name": "Toko mas Ujang",
-                                                "category" : "sayur-sayuran"
+                                                "category" : "sayur-sayuran",
+                                                "market_id" : 1
                                             },
                                             {
                                                 "id": 2,
                                                 "name": "Toko mas Bayu",
-                                                "category" : "daging"
+                                                "category" : "daging",
+                                                "market_id" : 1
                                             }
                                         ]
                                     }
@@ -246,11 +370,11 @@
                 }
             }
         },
-        "/markets/{market_id}/category/{category_name}" :{
+        "/markets/{market_id}/seller/{category_name}" :{
             "get" : {
                 "tags" : ["Market"],
-                "summary": "Get list category or seller",
-                "description": "et list category or seller by string",
+                "summary": "Get list seller by search",
+                "description": "Get list seller by searching category name",
                 "parameters": [
                     {
                         "$ref" : "#/components/parameters/CategoryList"
@@ -323,9 +447,9 @@
                                 },
                                 "examples": {
                                     "makanan kucing": {
-                                        "description": "failed to get list of category or seller",
+                                        "description": "failed to get list of seller",
                                         "value": {
-                                            "message": "category or seller not found"
+                                            "message": "seller not found"
                                         }
                                     }
                                 }
@@ -337,11 +461,6 @@
         },
         "/categories": {
             "get": {
-                "security": [
-                    {
-                        "JWTAuth": []
-                    }
-                ],
                 "tags": ["Category"],
                 "summary": "Get all list of category",
                 "description": "",
@@ -361,7 +480,7 @@
                                         "value": [
                                             {
                                                 "id": 1,
-                                                "name": "Sembako"
+                                                "name": "sayur"
                                             },
                                             {
                                                 "id": 2,
@@ -1258,6 +1377,390 @@
                 }
             }
         },
+        "/driver/orderlist": {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Driver"],
+                "summary": "Get a list of checkouts",
+                "description": "",
+                "parameters": [
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get checkouts with status searching",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "description": "Success get checkouts with status searching",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "total_qty": 2,
+                                                "total_price": 55000,
+                                                "customer_id": 1,
+                                                "payment_id": 1,
+                                                "status": "searching",
+                                                "delivery_price": 5000
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "failed get checkout",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "checkout_id : 0": {
+                                        "description": "Failed get checkout",
+                                        "value": {
+                                            "message": "checkout not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/driver/orderlist/{checkout_id}": {
+            "post": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Driver"],
+                "summary": "Taking an order(checkout)",
+                "description": "",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "checkout_id",
+                        "required": true,
+                        "description": "Id checkout to make a delivery",
+                        "schema": {
+                            "type": "integer",
+                            "minLength": 1,
+                            "maxLength": 10
+                        },
+                        "examples": {
+                            "Checkout 1": {
+                                "description": "sample checkout id for make delivery based on checkout id",
+                                "value": 1
+                            },
+                            "Checkout 2": {
+                                "description": "sample checkout id for make delivery based on checkout id",
+                                "value": 2
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success post make a delivery",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Checkout 1": {
+                                        "description": "Success make a delivery",
+                                        "value": [
+                                            {
+                                                "status": "progress",
+                                                "driver_id": 1,
+                                                "checkout_id": 1
+                                                
+                                            }
+                                        ]
+                                    },
+                                    "Checkout 2": {
+                                        "description": "Success make a delivery",
+                                        "value": [
+                                            {
+                                                "status": "progress",
+                                                "driver_id": 1,
+                                                "checkout_id": 2
+                                                
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "failed get checkout",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "checkout_id : 0": {
+                                        "description": "Failed get checkout",
+                                        "value": {
+                                            "message": "checkout not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "tags": ["Driver"],
+                "summary": "Marke delivery as finished",
+                "description": "",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "checkout_id",
+                        "required": true,
+                        "description": "Id checkout to finish a delivery",
+                        "schema": {
+                            "type": "integer",
+                            "minLength": 1,
+                            "maxLength": 10
+                        },
+                        "examples": {
+                            "Checkout 1": {
+                                "description": "sample checkout id for finish delivery based on checkout id",
+                                "value": 1
+                            },
+                            "Checkout 2": {
+                                "description": "sample checkout id for finish delivery based on checkout id",
+                                "value": 2
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success finish a delivery",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Checkout 1": {
+                                        "description": "Success finish a delivery",
+                                        "value": [
+                                            {
+                                                "status": "completed",
+                                                "driver_id": 1,
+                                                "checkout_id": 1
+                                                
+                                            }
+                                        ]
+                                    },
+                                    "Checkout 2": {
+                                        "description": "Success finish a delivery",
+                                        "value": [
+                                            {
+                                                "status": "completed",
+                                                "driver_id": 1,
+                                                "checkout_id": 2
+                                                
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "failed put delivery",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "checkout_id : 3": {
+                                        "description": "Failed put delivery",
+                                        "value": {
+                                            "message": "delivery with checkout_id 3 not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/driver/history" : {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth":[]
+                    }
+                ],
+                "tags": ["Driver"],
+                "summary": "Get customer's checkout status in progress",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "Status",
+                        "in": "query",
+                        "required": true,
+                        "description": "History delivery list",
+                        "schema" : {},
+                        "examples": {
+                            "progress" : {
+                                "description": "delivery status",
+                                "value" : "progress"
+                            },
+                            "completed" : {
+                                "description": "delivery status",
+                                "value" : "completed"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get a specific delivery status",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "Delivery status in progress": {
+                                        "description": "Success get delivery for a specific status",
+                                        "value": [
+                                            {
+                                                "driver_id": 1,
+                                                "checkout_id": 2,
+                                                "status": "progress"
+                                            }
+                                        ]
+                                    },
+                                    "Delivery status completed": {
+                                        "description": "Success get delivery for a specific status",
+                                        "value": [
+                                            {
+                                                "driver_id": 1,
+                                                "checkout_id": 1,
+                                                "status": "completed"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Delivery not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "status = stunned": {
+                                        "description": "failed to get specific delivery",
+                                        "value": {
+                                            "message": "delivery not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/driver/orderlist/orders" : {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth":[]
+                    }
+                ],
+                "tags": ["Driver"],
+                "summary": "Get list of order for driver to deliver",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "checkout_id",
+                        "in": "query",
+                        "required": true,
+                        "description": "checkout_id to check at delivery list",
+                        "schema" : {},
+                        "examples": {
+                            "checkout_id : 1" : {
+                                "value" : 1
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get list of orders",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArrayOrderList"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Example success get all order list",
+                                        "value": [
+                                            {
+                                                "product_id": 1,
+                                                "checkout_id": 1,
+                                                "qty": 1,
+                                                "price": 4000
+                                            },
+                                            {
+                                                "product_id": 2,
+                                                "checkout_id": 1,
+                                                "qty": 1,
+                                                "price": 5000
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Orders not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "checkout_id : 0": {
+                                        "description": "failed to get orders",
+                                        "value": {
+                                            "message": "checkout not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/driver/logout/{driver_id}": {
             "put" : {
                 "tags": ["Driver"],
@@ -1313,7 +1816,7 @@
                 }
             }
         },
-        "/cart/{id_cart}": {
+        "/cart": {
             "get": {
                 "security": [
                     {
@@ -1338,70 +1841,44 @@
                                         "description": "Example success get all products in a cart",
                                         "value": [
                                             {
-                                                "cart": {
-                                                    "id": 2,
-                                                    "customer_id": 3,
-                                                    "status": "ordered",
-                                                    "total_price": 70000,
-                                                    "total_quantity": 9
-                                                },
-                                                "seller": [
-                                                    {
-                                                        "id": 5,
-                                                        "name": "Toko Ibu Ani",
-                                                        "category_name": "Sayur-Sayuran",
-                                                        "products": [
-                                                            {
-                                                                "id": 5,
-                                                                "name": "Tomat",
-                                                                "price": 5000,
-                                                                "quantity": 1,
-                                                                "description": "Tomat"
-                                                            },
-                                                            {
-                                                                "id": 6,
-                                                                "name": "Kangkung",
-                                                                "price": 5000,
-                                                                "quantity": 2,
-                                                                "description": "Kangkung"
-                                                            }
-                                                        ]
-                                                    },
-                                                    {
-                                                        "id": 7,
-                                                        "name": "Toko Pak Paijo",
-                                                        "category_name": "Ayam",
-                                                        "products": [
-                                                            {
-                                                                "id": 1,
-                                                                "name": "Ayam Potong",
-                                                                "price": 45000,
-                                                                "quantity": 1,
-                                                                "description": "Ayam potong 1 ekor"
-                                                            },
-                                                            {
-                                                                "id": 3,
-                                                                "name": "Ati Ampela",
-                                                                "price": 2000,
-                                                                "quantity": 5,
-                                                                "description": "Ati ampela"
-                                                            }
-                                                        ]
-                                                    }
-                                                ]
+                                                "id": 1,
+                                                "customer_id": 1,
+                                                "product_id": 3,
+                                                "qty": 2,
+                                                "price": 20000
+                                            },
+                                            {
+                                                "id": 2,
+                                                "customer_id": 1,
+                                                "product_id": 4,
+                                                "qty": 1,
+                                                "price": 5000
                                             }
                                         ]
                                     }
                                 }
                             }
                         }
-                        
-                        
+                    },
+                    "404": {
+                        "description": "cart is empty",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "cart is empty": {
+                                        "description": "Failed to get product in cart",
+                                        "value": {
+                                            "message": "cart is empty"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
         },
-        "/cart/{id_cart}/{id_product}": {
+        "/cart/{cart_id}": {
             "delete": {
                 "security": [
                     {
@@ -1423,33 +1900,12 @@
                             "maxLength": 10
                         },
                         "examples": {
-                            "Cart 1": {
+                            "product in cart 1": {
                                 "description": "sample cart id for delete chosen products from a cart",
                                 "value": 1
                             },
-                            "Cart 2": {
+                            "product in cart 2": {
                                 "description": "sample cart id for delete chosen products from a cart",
-                                "value": 2
-                            }
-                        }
-                    },
-                    {
-                        "in": "path",
-                        "name": "id_product",
-                        "required": true,
-                        "description": "Id product for delete chosen products from a cart",
-                        "schema": {
-                            "type": "integer",
-                            "minLength": 1,
-                            "maxLength": 10
-                        },
-                        "examples": {
-                            "Product 1": {
-                                "description": "sample product id for delete chosen products from a cart",
-                                "value": 1
-                            },
-                            "Product 2": {
-                                "description": "sample product id for delete chosen products from a cart",
                                 "value": 2
                             }
                         }
@@ -1465,14 +1921,24 @@
                                     
                                 },
                                 "examples": {
-                                    "success": {
+                                    "product in cart 1": {
                                         "description": "Success delete chosen product from a cart",
                                         "value": {
-                                            "id": 5,
-                                            "name": "Tomat",
+                                            "id": 1,
                                             "price": 5000,
                                             "quantity": 1,
-                                            "description": "Tomat"
+                                            "product_id": 1,
+                                            "seller_id": 1
+                                        }
+                                    },
+                                    "product in cart 2": {
+                                        "description": "Success delete chosen product from a cart",
+                                        "value": {
+                                            "id": 2,
+                                            "price": 4000,
+                                            "quantity": 1,
+                                            "product_id": 2,
+                                            "seller_id": 1
                                         }
                                     }
                                 }
@@ -1549,160 +2015,9 @@
                 }
             }
         },
-        "/cart/inprogress": {
+        "/products": {
             "get": {
-                "security": [
-                    {
-                        "JWTAuth": []
-                    }
-                ],
-                "tags": ["Cart"],
-                "summary": "Get list of all inprogress carts",
-                "description": "",
-                "parameters": [
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success get all inprogress carts",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ArrayCompleteCartList"
-                                },
-                                "examples": {
-                                    "success": {
-                                        "description": "Example success get all inprogress carts",
-                                        "value": [
-                                            {
-                                                "id": 1,
-                                                "id_shop": "11",
-                                                "id_product": "21"
-                                            } 
-                                        ]
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/cart/complete": {
-            "get": {
-                "security": [
-                    {
-                        "JWTAuth": []
-                    }
-                ],
-                "tags": ["Cart"],
-                "summary": "Get list of all complete carts",
-                "description": "",
-                "parameters": [
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success get all complete carts",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ArrayCompleteCartList"
-                                },
-                                "examples": {
-                                    "success": {
-                                        "description": "Example success get all complete carts",
-                                        "value": [
-                                            {
-                                                "id": 2,
-                                                "id_shop": "12",
-                                                "id_product": "22"
-                                            }, 
-                                            {
-                                                "id": 3,
-                                                "id_shop": "13",
-                                                "id_product": "23"
-                                            } 
-                                        ]
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }, 
-        "/cart/{cartbyId}": {
-            "get": {
-                "security": [
-                    {
-                        "JWTAuth": []
-                    }
-                ],
-                "tags": ["Cart"],
-                "summary": "Get a cart by spesific Id",
-                "description": "",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/CartId"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success get cart by Id",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean"
-                                        }
-                                    }
-                                },
-                                "examples": {
-                                    "success": {
-                                        "description": "Success get cart by Id",
-                                        "value": {
-                                            "success": true
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Failed get not found cart",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean"
-                                        }
-                                    }
-                                },
-                                "examples": {
-                                    "failed": {
-                                        "description": "Failed get cart",
-                                        "value": {
-                                            "success": false
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/markets/{market_id}/shop/{shop_id}": {
-            "get": {
-                "security": [
-                    {
-                        "JWTAuth": []
-                    }
-                ],
-                "tags": ["Market"],
+                "tags": ["Product"],
                 "summary": "Get all products in selected shop",
                 "description": "",
                 "parameters": [
@@ -1732,19 +2047,28 @@
                         "description": "Success get product by shop id",
                         "content": {
                             "application/json": {
-                                "schema": {},
+                                "schema": {
+                                    "$ref" : "#/components/schemas/arrayProductShop"
+                                },
                                 "examples": {
                                     "Toko Jajang": {
                                         "description": "Success get all product in specific shop",
                                         "value": [
                                             {
                                                 "id": 1,
-                                                "name": "Toko Jajang",
-                                                "product": [
-                                                    {
-                                                        "$ref" : "#/components/schemas/arrayProductShop"
-                                                    }
-                                                ]
+                                                "category": "Sayur",
+                                                "name": "tomat",
+                                                "price": 2000,
+                                                "quantity": 50,
+                                                "description": "ini merupakan tomat"
+                                            },
+                                            {
+                                                "id": 2,
+                                                "category": "sayur",
+                                                "name": "sawi",
+                                                "price": 2500,
+                                                "quantity": 40,
+                                                "description": "ini merupakan sawi"
                                             }
                                         ]
                                     },
@@ -1752,13 +2076,20 @@
                                         "description": "Success get all product in specific shop",
                                         "value": [
                                             {
+                                                "id": 1,
+                                                "category": "Buah",
+                                                "name": "apel",
+                                                "price": 10000,
+                                                "quantity": 30,
+                                                "description": "ini merupakan apel"
+                                            },
+                                            {
                                                 "id": 2,
-                                                "name": "Toko Udin",
-                                                "product": [
-                                                    {
-                                                        "$ref" : "#/components/schemas/arrayProductShop"
-                                                    }
-                                                ]
+                                                "category": "buah",
+                                                "name": "jeruk",
+                                                "price": 8000,
+                                                "quantity": 40,
+                                                "description": "ini merupakan apel"
                                             }
                                         ]
                                     }
@@ -1767,7 +2098,7 @@
                         }
                     },
                     "404": {
-                        "description": "Shop not found",
+                        "description": "Seller not found",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1792,14 +2123,9 @@
                 }
             }
         },
-        "/markets/{market_id}/{shop_id}/{product_id}" : {
+        "/seller/{seller_id}/product" : {
             "get": {
-                "security": [
-                    {
-                        "JWTAuth": []
-                    }
-                ],
-                "tags": ["Market"],
+                "tags": ["Product"],
                 "summary": "Get specific product in selected shop",
                 "description": "",
                 "parameters": [
@@ -1813,12 +2139,18 @@
                         "application/json": {
                             "schema": {},
                             "examples":{
-                                "Market a": {
+                                "Toko Sehat Sejahtera": {
                                     "description": "Example get specific products from selected shop",
                                     "value": {
-                                        "Id": "1",
-                                        "shop_id": "2",
-                                        "product_id": "1"
+                                        "seller_id": "1",
+                                        "product_name": "Kunyit"
+                                    }
+                                },
+                                "Toko Udin": {
+                                    "description": "Example get specific products from selected shop",
+                                    "value": {
+                                        "seller_id": "2",
+                                        "product_name": "Teh"
                                     }
                                 }
                             }
@@ -1830,19 +2162,20 @@
                         "description": "Success get a specific product from shop id",
                         "content": {
                             "application/json": {
-                                "schema": {},
+                                "schema": {
+                                    "$ref" : "#/components/schemas/ProductShop"
+                                },
                                 "examples": {
-                                    "Toko Jajang": {
+                                    "Toko Sehat Sejahtera": {
                                         "description": "Success get a product in specific shop",
                                         "value": [
                                             {
                                                 "id": 1,
-                                                "name": "Toko Jajang",
-                                                "product": [
-                                                    {
-                                                        "$ref" : "#/components/schemas/ProductShop"
-                                                    }
-                                                ]
+                                                "category": "Jamu",
+                                                "name": "Kunyit telur",
+                                                "price": 4000,
+                                                "quantity": 40,
+                                                "description": "ini merupakan jahe kunyit telur"
                                             }
                                         ]
                                     },
@@ -1851,12 +2184,11 @@
                                         "value": [
                                             {
                                                 "id": 2,
-                                                "name": "Toko Udin",
-                                                "product": [
-                                                    {
-                                                        "$ref" : "#/components/schemas/ProductShop"
-                                                    }
-                                                ]
+                                                "category": "Teh",
+                                                "name": "Teh hijau",
+                                                "price": 4000,
+                                                "quantity": 20,
+                                                "description": "ini merupakan teh hijau"
                                             }
                                         ]
                                     }
@@ -1889,9 +2221,667 @@
                     }
                 }
             }
+        },
+        "/seller/{seller_id}/product/{product_id}" : {
+            "get": {
+                "tags": ["Product"],
+                "summary": "Get specific product in selected shop",
+                "description": "",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ShopId"
+                    }
+                ],
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {},
+                            "examples":{
+                                "Toko Sehat Sejahtera": {
+                                    "description": "Example get specific products from selected shop",
+                                    "value": {
+                                        "seller_id": "1",
+                                        "product_id": "1"
+                                    }
+                                },
+                                "Toko Udin": {
+                                    "description": "Example get specific products from selected shop",
+                                    "value": {
+                                        "seller_id": "2",
+                                        "product_id": "2"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success get a specific product from shop id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref" : "#/components/schemas/ProductShop"
+                                },
+                                "examples": {
+                                    "Toko Sehat Sejahtera": {
+                                        "description": "Success get a product in specific shop",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "category": "Jamu",
+                                                "name": "Kunyit telur",
+                                                "price": 4000,
+                                                "quantity": 40,
+                                                "description": "ini merupakan jahe kunyit telur"
+                                            }
+                                        ]
+                                    },
+                                    "Toko Udin": {
+                                        "description": "Success get all product in specific shop",
+                                        "value": [
+                                            {
+                                                "id": 2,
+                                                "category": "Teh",
+                                                "name": "Teh hijau",
+                                                "price": 4000,
+                                                "quantity": 20,
+                                                "description": "ini merupakan teh hijau"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Shop or product not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "1": {
+                                        "description": "failed to get specific product",
+                                        "value": {
+                                            "message": "product not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "JWTAuth":[]
+                    }
+                ],
+                "tags": ["Cart"],
+                "summary": "Add Product into cart",
+                "description": "",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/SellerParam"
+                    },
+                    {
+                        "$ref": "#/components/parameters/ProductParam"
+                    }
+                ],
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {},
+                            "examples":{
+                                "quantity": {
+                                    "description": "Insert qty",
+                                    "value": {
+                                        "qty": 1
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success add product into a cart",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref" : "#/components/schemas/ProductShop"
+                                },
+                                "examples": {
+                                    "bawang merah": {
+                                        "description": "Success insert a product into a cart",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "price": 4000,
+                                                "quantity": 1,
+                                                "product_id":1,
+                                                "seller_id":1
+                                            }
+                                        ]
+                                    },
+                                    "cabe": {
+                                        "description": "Success insert a product into a cart",
+                                        "value": [
+                                            {
+                                                "id": 2,
+                                                "price": 5000,
+                                                "quantity": 1,
+                                                "product_id":1,
+                                                "seller_id":1
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Seller or product not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "product_id : 0": {
+                                        "description": "failed to get specific product",
+                                        "value": {
+                                            "message": "product not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/history" : {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth":[]
+                    }
+                ],
+                "tags": ["History"],
+                "summary": "Get customer's checkout status in progress",
+                "description": "",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/History"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get a specific checkout status",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref" : "#/components/schemas/Checkout"
+                                },
+                                "examples": {
+                                    "Checkout status in progress": {
+                                        "description": "Success get checkout for a specific status",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "totalQty": 3,
+                                                "totalPrice": 20000,
+                                                "customerId": 1,
+                                                "paymentId": 2,
+                                                "status": "delivery"
+                                            },
+                                            {
+                                                "id": 2,
+                                                "totalQty": 3,
+                                                "totalPrice": 30000,
+                                                "customerId": 1,
+                                                "paymentId": 1,
+                                                "status": "delivery"
+                                            },
+                                            {
+                                                "id": 3,
+                                                "totalQty": 4,
+                                                "totalPrice": 22000,
+                                                "customerId": 1,
+                                                "paymentId": 1,
+                                                "status": "delivery"
+                                            }
+                                        ]
+                                    },
+                                    "Checkout status completed": {
+                                        "description": "Success get checkout for a specific status",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "totalQty": 3,
+                                                "totalPrice": 20000,
+                                                "customerId": 1,
+                                                "paymentId": 1,
+                                                "status": "completed"
+                                            },
+                                            {
+                                                "id": 2,
+                                                "totalQty": 3,
+                                                "totalPrice": 30000,
+                                                "customerId": 1,
+                                                "paymentId": 2,
+                                                "status": "completed"
+                                            },
+                                            {
+                                                "id": 3,
+                                                "totalQty": 4,
+                                                "totalPrice": 22000,
+                                                "customerId": 1,
+                                                "paymentId": 1,
+                                                "status": "completed"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Checkout not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "status = stunned": {
+                                        "description": "failed to get specific checkout",
+                                        "value": {
+                                            "message": "checkout not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/seller/products" : {
+            "get": {
+                "security": [
+                    {
+                        "JWTAuth":[]
+                    }
+                ],
+                "tags": ["Seller"],
+                "summary": "Get seller products",
+                "description": "",
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {},
+                            "examples":{
+                                "Seller 1": {
+                                    "description": "Example get products from my shop",
+                                    "value": {
+                                        "token": "extract token and get seller_id"
+                                    }
+                                },
+                                "Seller 2": {
+                                    "description": "Example get products from my shop",
+                                    "value": {
+                                        "token": "extract token and get seller_id"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success get a specific seller product",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref" : "#/components/schemas/Product"
+                                },
+                                "examples": {
+                                    "Seller 1": {
+                                        "description": "Success get your products",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "name": "tomat",
+                                                "price": 2000,
+                                                "stock": 50,
+                                                "description": "ini tomat",
+                                                "sellerId": 1
+                                            },
+                                            {
+                                                "id": 2,
+                                                "name": "sawi",
+                                                "price": 3000,
+                                                "stock": 50,
+                                                "description": "ini sawi",
+                                                "sellerId": 1
+                                            },
+                                            {
+                                                "id": 3,
+                                                "name": "tomat hijau",
+                                                "price": 2100,
+                                                "stock": 50,
+                                                "description": "ini tomat hijau",
+                                                "sellerId": 1
+                                            }
+                                        ]
+                                    },
+                                    "Seller 2": {
+                                        "description": "Success get your products",
+                                        "value": [
+                                            {
+                                                "id": 4,
+                                                "name": "jamu kunyit",
+                                                "price": 8000,
+                                                "stock": 50,
+                                                "description": "ini jamu kunyit",
+                                                "sellerId": 2
+                                            },
+                                            {
+                                                "id": 5,
+                                                "name": "jamu kuat",
+                                                "price": 10000,
+                                                "stock": 50,
+                                                "description": "ini jamu kuat",
+                                                "sellerId": 2
+                                            },
+                                            {
+                                                "id": 6,
+                                                "name": "jamu ginseng",
+                                                "price": 21000,
+                                                "stock": 20,
+                                                "description": "ini jamu ginseng",
+                                                "sellerId": 2
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Shop or product not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "1": {
+                                        "description": "failed to get specific product",
+                                        "value": {
+                                            "message": "product not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "JWTAuth":[]
+                    }
+                ],
+                "tags": ["Seller"],
+                "summary": "Add seller products",
+                "description": "",
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {},
+                            "examples":{
+                                "Seller 1": {
+                                    "description": "Example add products from my shop",
+                                    "value": {
+                                        "name": "tomat",
+                                        "price": 2000,
+                                        "stock": 50,
+                                        "description": "ini tomat",
+                                        "sellerId": 1
+                                    }
+                                },
+                                "Seller 2": {
+                                    "description": "Example add products from my shop",
+                                    "value": {
+                                        "id": 4,
+                                        "name": "jamu kunyit",
+                                        "price": 8000,
+                                        "stock": 50,
+                                        "description": "ini jamu kunyit",
+                                        "sellerId": 2
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success add a specific seller product",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref" : "#/components/schemas/Product"
+                                },
+                                "examples": {
+                                    "Seller 1": {
+                                        "description": "Success add your products",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "name": "tomat",
+                                                "price": 2000,
+                                                "stock": 50,
+                                                "description": "ini tomat",
+                                                "sellerId": 1
+                                            }
+                                        ]
+                                    },
+                                    "Seller 2": {
+                                        "description": "Success add your products",
+                                        "value": [
+                                            {
+                                                "id": 4,
+                                                "name": "jamu kunyit",
+                                                "price": 8000,
+                                                "stock": 50,
+                                                "description": "ini jamu kunyit",
+                                                "sellerId": 2
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Product cannot be added",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "1": {
+                                        "description": "failed to add specific product",
+                                        "value": {
+                                            "message": "product not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/seller/products/{product_id};" : {
+            "put": {
+                "security": [
+                    {
+                        "JWTAuth":[]
+                    }
+                ],
+                "tags": ["Seller"],
+                "summary": "Edit seller products",
+                "description": "",
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {},
+                            "examples":{
+                                "Seller 1": {
+                                    "description": "Example add products from my shop",
+                                    "value": {
+                                        "name": "tomat",
+                                        "price": 2000,
+                                        "stock": 50,
+                                        "description": "ini tomat",
+                                        "sellerId": 1
+                                    }
+                                },
+                                "Seller 2": {
+                                    "description": "Example add products from my shop",
+                                    "value": {
+                                        "id": 4,
+                                        "name": "jamu kunyit",
+                                        "price": 8000,
+                                        "stock": 50,
+                                        "description": "ini jamu kunyit",
+                                        "sellerId": 2
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success add a specific seller product",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref" : "#/components/schemas/Product"
+                                },
+                                "examples": {
+                                    "Seller 1": {
+                                        "description": "Success edit your products",
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "name": "tomat",
+                                                "price": 2000,
+                                                "stock": 50,
+                                                "description": "ini tomat",
+                                                "sellerId": 1
+                                            }
+                                        ]
+                                    },
+                                    "Seller 2": {
+                                        "description": "Success edit your products",
+                                        "value": [
+                                            {
+                                                "id": 4,
+                                                "name": "jamu kunyit",
+                                                "price": 8000,
+                                                "stock": 50,
+                                                "description": "ini jamu kunyit",
+                                                "sellerId": 2
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Product cannot be edited",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "1": {
+                                        "description": "failed to edit specific product",
+                                        "value": {
+                                            "message": "product not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
+        "securitySchemes": {
+            "JWTAuth": {            
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            },
+            "TodolistAuth": {
+                "description": "Authentication for Todolist RESTful API",
+                "type": "apiKey",
+                "in": "header",
+                "name": "X-API-Key"
+            }
+        },
         "parameters" : {
             "UserId" : {
                 "name" : "UserId",
@@ -1966,11 +2956,11 @@
                     "type": "object" 
                 },
                 "examples": {
-                    "java": {
+                    "shop a": {
                         "description": "sample todo list id for java",
                         "value": 1
                     },
-                    "php": {
+                    "shop b": {
                         "description": "sample todo list id for php",
                         "value": 2
                     }
@@ -1981,9 +2971,7 @@
                 "in": "path",
                 "required": true,
                 "description": "Cart id for get",
-                "schema": {
-                    "type": "object" 
-                },
+                "schema": {},
                 "examples": {
                     "java": {
                         "description": "sample todo list id for java",
@@ -1992,6 +2980,53 @@
                     "php": {
                         "description": "sample todo list id for php",
                         "value": 2
+                    }
+                }
+            },
+            "SellerParam": {
+                "name" : "Seller ID",
+                "in" : "path",
+                "required": true,
+                "description": "value for seller id",
+                "schema" : {},
+                "examples": {
+                    "seller a" : {
+                        "description": "seller id",
+                        "value" : "1"
+                    }
+                }
+            },
+            "ProductParam": {
+                "name" : "Product ID",
+                "in" : "path",
+                "required": true,
+                "description": "value for product id",
+                "schema" : {},
+                "examples": {
+                    "bawang merah" : {
+                        "description": "product id",
+                        "value" : "1"
+                    },
+                    "cabe" : {
+                        "description": "product id",
+                        "value" : "2"
+                    }
+                }
+            },
+            "History": {
+                "name": "Status",
+                "in": "query",
+                "required": true,
+                "description": "History list",
+                "schema" : {},
+                "examples": {
+                    "delivery" : {
+                        "description": "checkout status",
+                        "value" : "delivery"
+                    },
+                    "completed" : {
+                        "description": "checkout status",
+                        "value" : "completed"
                     }
                 }
             }
@@ -2291,17 +3326,17 @@
                     "id": {
                         "type": "integer"
                     },
-                    "name": {
-                        "type": "string"
-                    },
                     "price": {
                         "type": "integer"
                     },
                     "quantity": {
                         "type": "integer"
                     },
-                    "description": {
-                        "type": "string"
+                    "product_id": {
+                        "type": "integer"
+                    },
+                    "seller_id": {
+                        "type": "integer"
                     }
                 } 
             },
@@ -2372,6 +3407,75 @@
                 "type": "array",
                 "items": {
                     "$ref": "#/components/schemas/CompleteCartList"
+                }
+            },
+            "Order": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "qty":{
+                        "type": "integer"
+                    },
+                    "price": {
+                        "type": "integer"
+                    },
+                    "checkout_id":{
+                        "type": "integer"
+                    },
+                    "product_id": {
+                        "type": "integer"
+                    },
+                    "status": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Checkout":{
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "totalQty":{
+                        "type": "integer"
+                    },
+                    "totalPrice":{
+                        "type": "integer"
+                    },
+                    "customerId": {
+                        "type": "integer"
+                    },
+                    "paymentId": {
+                        "type": "integer"
+                    },
+                    "status":{
+                        "type": "string"
+                    }
+                }
+            },
+            "Product": {
+                "type": "object",
+                "properties": {
+                    "id":{
+                        "type": "integer"
+                    },
+                    "name":{
+                        "type": "string"
+                    },
+                    "Price":{
+                        "type": "integer"
+                    },
+                    "stock":{
+                        "type": "integer"
+                    },
+                    "Description":{
+                        "type": "string"
+                    },
+                    "sellerId":{
+                        "type": "integer"
+                    }
                 }
             }
         }
